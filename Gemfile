@@ -32,8 +32,8 @@ gem 'term-ansicolor', :require => 'term/ansicolor'
 gem 'dm-core'
 gem 'json'
 gem 'data_objects'
-gem 'dm-sqlite-adapter'  # SQLite support
-#gem dm-postgres-adapter # PostgreSQL support
+# gem 'dm-sqlite-adapter'  # SQLite support
+gem 'dm-postgres-adapter' # PostgreSQL support
 #gem dm-mysql-adapter    # MySQL support
 gem 'parseconfig'
 gem 'erubis'

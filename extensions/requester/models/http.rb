@@ -24,10 +24,12 @@ module Models
     property :request, Text, :lazy => true
 
     # Boolean value as string to say whether cross-domain requests are allowed
-    property :allow_cross_domain, Text, :lazy => false, :default => "true"
+    # property :allow_cross_domain, Text, :lazy => false, :default => "true"
+    property :allow_cross_domain, Text, :lazy => false
 
     # The http response body received. In clear text.
-    property :response_data, Binary, :lazy => true, :length => 2097152
+    # property :response_data, Binary, :lazy => true, :length => 2097152
+    property :response_data, Text, :lazy => true
 
     # The http response code. Useful to handle cases like 404, 500, 302, ...
     property :response_status_code, Integer, :lazy => true
