@@ -86,6 +86,10 @@ beef.os = {
 		return (this.ua.match('(Windows NT 6.3)')) ? true : false;
 	},
 	
+	isWin10: function() {
+		return (this.ua.match('Windows NT 10.0')) ? true : false;
+	},
+	
 	isOpenBSD: function() {
 		return (this.ua.indexOf('OpenBSD') != -1) ? true : false;
 	},
@@ -155,6 +159,10 @@ beef.os = {
 		return (this.ua.match('BeOS')) ? true : false;
 	},
 
+        isAros: function() {
+                return (this.ua.match('AROS')) ? true : false;
+        },
+
 	isWindows: function() {
 		return (this.ua.match('Windows')) ? true : false;
 	},
@@ -199,6 +207,7 @@ beef.os = {
 		if(this.isQNX()) return 'QNX';
 		if(this.isBeOS()) return 'BeOS';
 		if(this.isWebOS()) return 'webOS';
+		if(this.isAros()) return 'AROS';
 		
 		return 'unknown';
 	},
@@ -206,6 +215,7 @@ beef.os = {
 	getVersion: function(){
 		//Windows
 		if(this.isWindows()) {
+			if (this.isWin10())         return '10';
 			if (this.isWin81())         return '8.1';
 			if (this.isWin8())          return '8';
 			if (this.isWin7())          return '7';
