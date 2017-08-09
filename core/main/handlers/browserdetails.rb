@@ -70,7 +70,7 @@ module BeEF
           @http_headers = Hash.new
           http_header = @data['request'].env.select { |k, v| k.to_s.start_with? 'HTTP_' }
           .each { |key, value|
-            @http_headers[key.sub(/^HTTP_/, '')] = value
+            @http_headers[key.sub(/^HTTP_/, '')] = value.force_encoding('UTF-8')
           }
           zombie.httpheaders = @http_headers.to_json
           zombie.save
@@ -90,7 +90,6 @@ module BeEF
           ip_str = zombie.ip
           if config.get('beef.dns_hostname_lookup')
             begin
-              require 'resolv'
               host_name = Resolv.getname(zombie.ip).to_s
               if BeEF::Filters.is_valid_hostname?(host_name)
                 ip_str += " [#{host_name}]"
@@ -103,7 +102,6 @@ module BeEF
 
           # geolocation
           if config.get('beef.geoip.enable')
-            require 'geoip'
             geoip_file = config.get('beef.geoip.database')
             if File.exists? geoip_file
               geoip = GeoIP.new(geoip_file).city(zombie.ip)
@@ -322,7 +320,7 @@ module BeEF
           # get and store the yes|no value for browser components
           components = [
               'VBScriptEnabled', 'HasFlash', 'HasPhonegap', 'HasGoogleGears',
-              'HasWebSocket', 'HasWebRTC', 'HasActiveX',
+              'HasWebSocket', 'HasWebWorker', 'HasWebGL', 'HasWebRTC', 'HasActiveX',
               'HasQuickTime', 'HasRealPlayer', 'HasWMP'
           ]
           components.each do |k|
@@ -378,7 +376,7 @@ module BeEF
         end
 
         def get_param(query, key)
-          (query.class == Hash and query.has_key?(key)) ? query[key] : nil
+          (query.class == Hash and query.has_key?(key)) ? query[key].to_s : nil
         end
       end
 

@@ -13,11 +13,12 @@ require 'yaml'
 require 'singleton'
 require 'ipaddr'
 require 'base64'
-require 'xmlrpc/client'
 require 'openssl'
 require 'rubydns'
 require 'mime/types'
 require 'optparse'
+require 'resolv'
+require 'geoip'
 
 # @note Include the filters
 require 'core/filters'

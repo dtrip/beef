@@ -9,16 +9,17 @@
 # stop deprecation warning from being displayed
 $VERBOSE = nil
 
-# @note Version check to ensure BeEF is running Ruby 2.1+
-if RUBY_VERSION < '2.1'
+# @note Version check to ensure BeEF is running Ruby 2.2+
+if RUBY_VERSION < '2.2'
   puts "\n"
-  puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version 2.1 or later."
+  puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version 2.2 or later."
   puts "\n"
   exit 1
 end
 
 $:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), '.'))
 $root_dir = File.expand_path('..', __FILE__)
+$home_dir = File.expand_path('~/.beef', __FILE__).freeze
 
 # @note Require core loader's
 require 'core/loader'
@@ -117,6 +118,18 @@ BeEF::Core::Console::Banners.print_loaded_extensions
 BeEF::Core::Console::Banners.print_loaded_modules
 BeEF::Core::Console::Banners.print_network_interfaces_count
 BeEF::Core::Console::Banners.print_network_interfaces_routes
+
+# @note Warn on default credentials
+if config.get("beef.credentials.user").eql?('beef') && config.get("beef.credentials.passwd").eql?('beef')
+  print_warning "Warning: Default username and password in use!"
+end
+
+# @note create ~/.beef/
+begin
+    FileUtils.mkdir_p($home_dir) unless File.directory?($home_dir)
+rescue => e
+    print_error "Could not create '#{$home_dir}': #{e.message}"
+end
 
 #@note Prints the API key needed to use the RESTful API
 print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
