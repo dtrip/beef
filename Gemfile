@@ -1,7 +1,7 @@
 # BeEF's Gemfile
 
 #
-# Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2018 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -89,7 +89,8 @@ if ENV['BEEF_TEST']
   gem 'test-unit-full'
   gem 'curb'
   gem 'selenium'
-  gem 'selenium-webdriver'
+  # selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
+  gem 'selenium-webdriver', '~> 2.53.4'
   gem 'rspec'
   gem 'bundler-audit'
   # nokogirl is needed by capybara which may require one of the below commands

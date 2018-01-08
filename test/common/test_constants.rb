@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2018 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -13,7 +13,7 @@ VICTIM_URL = "http://" + VICTIM_DOMAIN + ":3000/demos/basic.html"
 
 # Credentials
 BEEF_USER = "beef"
-BEEF_PASSWD = "beef"
+BEEF_PASSWD = "test"
 
 # RESTful API root endpoints
 RESTAPI_HOOKS = "http://" + ATTACK_DOMAIN + ":3000/api/hooks"
