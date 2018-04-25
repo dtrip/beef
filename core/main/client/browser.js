@@ -589,13 +589,21 @@ beef.browser = {
     isFF57: function () {
         return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/57./) != null;
     },
+    
+    /**
+     * Returns true if FF58
+     * @example: beef.browser.isFF58()
+     */
+    isFF58: function () {
+        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/58./) != null;
+    },
 
     /**
      * Returns true if FF.
      * @example: beef.browser.isFF()
      */
     isFF: function () {
-        return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19() || this.isFF20() || this.isFF21() || this.isFF22() || this.isFF23() || this.isFF24() || this.isFF25() || this.isFF26() || this.isFF27() || this.isFF28() || this.isFF29() || this.isFF30() || this.isFF31() || this.isFF32() || this.isFF33() || this.isFF34() || this.isFF35() || this.isFF36() || this.isFF37() || this.isFF38() || this.isFF39() || this.isFF40() || this.isFF41() || this.isFF42() || this.isFF43() || this.isFF44() || this.isFF45() || this.isFF46() || this.isFF47() || this.isFF48() || this.isFF49() || this.isFF50() || this.isFF51() || this.isFF52() || this.isFF53() || this.isFF54() || this.isFF55() || this.isFF56() || this.isFF57();
+        return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19() || this.isFF20() || this.isFF21() || this.isFF22() || this.isFF23() || this.isFF24() || this.isFF25() || this.isFF26() || this.isFF27() || this.isFF28() || this.isFF29() || this.isFF30() || this.isFF31() || this.isFF32() || this.isFF33() || this.isFF34() || this.isFF35() || this.isFF36() || this.isFF37() || this.isFF38() || this.isFF39() || this.isFF40() || this.isFF41() || this.isFF42() || this.isFF43() || this.isFF44() || this.isFF45() || this.isFF46() || this.isFF47() || this.isFF48() || this.isFF49() || this.isFF50() || this.isFF51() || this.isFF52() || this.isFF53() || this.isFF54() || this.isFF55() || this.isFF56() || this.isFF57() || this.isFF58();
     },
 
     /**
@@ -645,6 +653,31 @@ beef.browser = {
     isS: function () {
         return this.isS4() || this.isS5() || this.isS6() || this.isS7() || this.isS8();
     },
+
+    /**
+     * Returns true if Webkit based
+     *
+     * **** DUPLICATE WARNING **** Changes here may aldo need addressed in /isS\d+/ functions.
+     */
+    isWebKitBased: function () {
+        return (!window.opera && !window.chrome
+                && window.navigator.userAgent.match(/ Version\/\d/) != null
+                && !window.globalStorage
+                && !!window.getComputedStyle
+                && !("MozWebSocket" in window));
+    },
+
+    /**
+     * Return true if Epiphany
+     * @example: beef.browser.isEpi()
+     */
+    isEpi: function () {
+        // Epiphany is based on webkit
+        // due to the uncertainty of webkit version vs Epiphany versions tracking.
+        // -- do webkit based checking (i.e. do safari checks)
+        return this.isWebKitBased() &&  window.navigator.userAgent.match(/Epiphany\//) != null;
+    },
+
 
     /**
      * Returns true if Chrome 5.
@@ -771,7 +804,7 @@ beef.browser = {
      * @example: beef.browser.isC19iOS()
      */
     isC19iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 19) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 19) ? true : false);
     },
 
     /**
@@ -787,7 +820,7 @@ beef.browser = {
      * @example: beef.browser.isC20iOS()
      */
     isC20iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 20) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 20) ? true : false);
     },
 
     /**
@@ -803,7 +836,7 @@ beef.browser = {
      * @example: beef.browser.isC21iOS()
      */
     isC21iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 21) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 21) ? true : false);
     },
 
     /**
@@ -819,7 +852,7 @@ beef.browser = {
      * @example: beef.browser.isC22iOS()
      */
     isC22iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 22) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 22) ? true : false);
     },
 
     /**
@@ -835,7 +868,7 @@ beef.browser = {
      * @example: beef.browser.isC23iOS()
      */
     isC23iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 23) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 23) ? true : false);
     },
 
     /**
@@ -851,7 +884,7 @@ beef.browser = {
      * @example: beef.browser.isC24iOS()
      */
     isC24iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 24) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 24) ? true : false);
     },
 
     /**
@@ -867,7 +900,7 @@ beef.browser = {
      * @example: beef.browser.isC25iOS()
      */
     isC25iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 25) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 25) ? true : false);
     },
 
     /**
@@ -883,7 +916,7 @@ beef.browser = {
      * @example: beef.browser.isC26iOS()
      */
     isC26iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 26) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 26) ? true : false);
     },
 
     /**
@@ -899,7 +932,7 @@ beef.browser = {
      * @example: beef.browser.isC27iOS()
      */
     isC27iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 27) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 27) ? true : false);
     },
 
     /**
@@ -915,7 +948,7 @@ beef.browser = {
      * @example: beef.browser.isC28iOS()
      */
     isC28iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 28) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 28) ? true : false);
     },
 
     /**
@@ -931,7 +964,7 @@ beef.browser = {
      * @example: beef.browser.isC29iOS()
      */
     isC29iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 29) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 29) ? true : false);
     },
 
     /**
@@ -947,7 +980,7 @@ beef.browser = {
      * @example: beef.browser.isC30iOS()
      */
     isC30iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 30) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 30) ? true : false);
     },
 
     /**
@@ -963,7 +996,7 @@ beef.browser = {
      * @example: beef.browser.isC31iOS()
      */
     isC31iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 31) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 31) ? true : false);
     },
 
     /**
@@ -979,7 +1012,7 @@ beef.browser = {
      * @example: beef.browser.isC32iOS()
      */
     isC32iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 32) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 32) ? true : false);
     },
 
     /**
@@ -995,7 +1028,7 @@ beef.browser = {
      * @example: beef.browser.isC33iOS()
      */
     isC33iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 33) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 33) ? true : false);
     },
 
     /**
@@ -1011,7 +1044,7 @@ beef.browser = {
      * @example: beef.browser.isC34iOS()
      */
     isC34iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 34) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 34) ? true : false);
     },
 
     /**
@@ -1027,7 +1060,7 @@ beef.browser = {
      * @example: beef.browser.isC35iOS()
      */
     isC35iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 35) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 35) ? true : false);
     },
 
     /**
@@ -1043,7 +1076,7 @@ beef.browser = {
      * @example: beef.browser.isC36iOS()
      */
     isC36iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 36) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 36) ? true : false);
     },
 
     /**
@@ -1059,7 +1092,7 @@ beef.browser = {
      * @example: beef.browser.isC37iOS()
      */
     isC37iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 37) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 37) ? true : false);
     },
 
     /**
@@ -1075,7 +1108,7 @@ beef.browser = {
      * @example: beef.browser.isC38iOS()
      */
     isC38iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 38) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 38) ? true : false);
     },
 
     /**
@@ -1091,7 +1124,7 @@ beef.browser = {
      * @example: beef.browser.isC39iOS()
      */
     isC39iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 39) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 39) ? true : false);
     },
 
     /**
@@ -1107,7 +1140,7 @@ beef.browser = {
      * @example: beef.browser.isC40iOS()
      */
     isC40iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 40) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 40) ? true : false);
     },
 
     /**
@@ -1123,7 +1156,7 @@ beef.browser = {
      * @example: beef.browser.isC41iOS()
      */
     isC41iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 41) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 41) ? true : false);
     },
 
     /**
@@ -1139,7 +1172,7 @@ beef.browser = {
      * @example: beef.browser.isC42iOS()
      */
     isC42iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 42) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 42) ? true : false);
     },
 
     /**
@@ -1155,7 +1188,7 @@ beef.browser = {
      * @example: beef.browser.isC43iOS()
      */
     isC43iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 43) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 43) ? true : false);
     },
 
     /**
@@ -1171,7 +1204,7 @@ beef.browser = {
      * @example: beef.browser.isC44iOS()
      */
     isC44iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 44) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 44) ? true : false);
     },
 
     /**
@@ -1187,7 +1220,7 @@ beef.browser = {
      * @example: beef.browser.isC45iOS()
      */
     isC45iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 45) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 45) ? true : false);
     },
 
     /**
@@ -1203,7 +1236,7 @@ beef.browser = {
      * @example: beef.browser.isC46iOS()
      */
     isC46iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 46) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 46) ? true : false);
     },
 
     /**
@@ -1219,7 +1252,7 @@ beef.browser = {
      * @example: beef.browser.isC47iOS()
      */
     isC47iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 47) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 47) ? true : false);
     },
 
     /**
@@ -1235,7 +1268,7 @@ beef.browser = {
      * @example: beef.browser.isC48iOS()
      */
     isC48iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 48) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 48) ? true : false);
     },
 
     /**
@@ -1251,7 +1284,7 @@ beef.browser = {
      * @example: beef.browser.isC49iOS()
      */
     isC49iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 49) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 49) ? true : false);
     },
 
     /**
@@ -1267,7 +1300,7 @@ beef.browser = {
      * @example: beef.browser.isC50iOS()
      */
     isC50iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 50) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 50) ? true : false);
     },
 
     /**
@@ -1283,7 +1316,7 @@ beef.browser = {
      * @example: beef.browser.isC51iOS()
      */
     isC51iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 51) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 51) ? true : false);
     },
 
     /**
@@ -1299,7 +1332,7 @@ beef.browser = {
      * @example: beef.browser.isC52iOS()
      */
     isC52iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 52) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 52) ? true : false);
     },
 
     /**
@@ -1315,7 +1348,7 @@ beef.browser = {
      * @example: beef.browser.isC53iOS()
      */
     isC53iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 53) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 53) ? true : false);
     },
 
     /**
@@ -1331,7 +1364,7 @@ beef.browser = {
      * @example: beef.browser.isC54iOS()
      */
     isC54iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 54) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 54) ? true : false);
     },
 
     /**
@@ -1347,7 +1380,7 @@ beef.browser = {
      * @example: beef.browser.isC55iOS()
      */
     isC55iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 55) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 55) ? true : false);
     },
 
     /**
@@ -1363,7 +1396,7 @@ beef.browser = {
      * @example: beef.browser.isC56iOS()
      */
     isC56iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 56) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 56) ? true : false);
     },
 
     /**
@@ -1379,7 +1412,7 @@ beef.browser = {
      * @example: beef.browser.isC57iOS()
      */
     isC57iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 57) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 57) ? true : false);
     },
 
     /**
@@ -1395,7 +1428,10 @@ beef.browser = {
      * @example: beef.browser.isC58iOS()
      */
     isC58iOS: function () {
-        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 58) ? true : false);
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 58) ? true : false);
+    },
+    isC63iOS: function () {
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./) != null) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 63) ? true : false);
     },
 
     /**
@@ -1403,7 +1439,7 @@ beef.browser = {
      * @example: beef.browser.isC()
      */
     isC: function () {
-        return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16() || this.isC17() || this.isC18() || this.isC19() || this.isC19iOS() || this.isC20() || this.isC20iOS() || this.isC21() || this.isC21iOS() || this.isC22() || this.isC22iOS() || this.isC23() || this.isC23iOS() || this.isC24() || this.isC24iOS() || this.isC25() || this.isC25iOS() || this.isC26() || this.isC26iOS() || this.isC27() || this.isC27iOS() || this.isC28() || this.isC28iOS() || this.isC29() || this.isC29iOS() || this.isC30() || this.isC30iOS() || this.isC31() || this.isC31iOS() || this.isC32() || this.isC32iOS() || this.isC33() || this.isC33iOS() || this.isC34() || this.isC34iOS() || this.isC35() || this.isC35iOS() || this.isC36() || this.isC36iOS() || this.isC37() || this.isC37iOS() || this.isC38() || this.isC38iOS() || this.isC39() || this.isC39iOS() || this.isC40() || this.isC40iOS() || this.isC41() || this.isC41iOS() || this.isC42() || this.isC42iOS() || this.isC43() || this.isC43iOS() || this.isC44() || this.isC44iOS() || this.isC45() || this.isC45iOS() || this.isC46() || this.isC46iOS() || this.isC47() || this.isC47iOS() || this.isC48() || this.isC48iOS() || this.isC49() || this.isC49iOS() || this.isC50() || this.isC50iOS() || this.isC51() || this.isC51iOS() || this.isC52() || this.isC52iOS() || this.isC53() || this.isC53iOS() || this.isC54() || this.isC54iOS() || this.isC55() || this.isC55iOS() || this.isC56() || this.isC56iOS() || this.isC57() || this.isC57iOS() || this.isC58() || this.isC58iOS();
+        return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16() || this.isC17() || this.isC18() || this.isC19() || this.isC19iOS() || this.isC20() || this.isC20iOS() || this.isC21() || this.isC21iOS() || this.isC22() || this.isC22iOS() || this.isC23() || this.isC23iOS() || this.isC24() || this.isC24iOS() || this.isC25() || this.isC25iOS() || this.isC26() || this.isC26iOS() || this.isC27() || this.isC27iOS() || this.isC28() || this.isC28iOS() || this.isC29() || this.isC29iOS() || this.isC30() || this.isC30iOS() || this.isC31() || this.isC31iOS() || this.isC32() || this.isC32iOS() || this.isC33() || this.isC33iOS() || this.isC34() || this.isC34iOS() || this.isC35() || this.isC35iOS() || this.isC36() || this.isC36iOS() || this.isC37() || this.isC37iOS() || this.isC38() || this.isC38iOS() || this.isC39() || this.isC39iOS() || this.isC40() || this.isC40iOS() || this.isC41() || this.isC41iOS() || this.isC42() || this.isC42iOS() || this.isC43() || this.isC43iOS() || this.isC44() || this.isC44iOS() || this.isC45() || this.isC45iOS() || this.isC46() || this.isC46iOS() || this.isC47() || this.isC47iOS() || this.isC48() || this.isC48iOS() || this.isC49() || this.isC49iOS() || this.isC50() || this.isC50iOS() || this.isC51() || this.isC51iOS() || this.isC52() || this.isC52iOS() || this.isC53() || this.isC53iOS() || this.isC54() || this.isC54iOS() || this.isC55() || this.isC55iOS() || this.isC56() || this.isC56iOS() || this.isC57() || this.isC57iOS() || this.isC58() || this.isC58iOS() || this.isC63iOS();
     },
 
     /**
@@ -1570,6 +1606,7 @@ beef.browser = {
             C57iOS: this.isC57iOS(), // Chrome 57 on iOS
             C58: this.isC58(), // Chrome 58
             C58iOS: this.isC58iOS(), // Chrome 58 on iOS
+            C63iOS: this.isC63iOS(),
             C: this.isC(), // Chrome any version
 
             FF2: this.isFF2(), // Firefox 2
@@ -1630,6 +1667,7 @@ beef.browser = {
             FF55: this.isFF55(), // Firefox 55
             FF56: this.isFF56(), // Firefox 56
             FF57: this.isFF57(), // Firefox 57
+            FF58: this.isFF58(), // Firefox 58
             FF: this.isFF(),   // Firefox any version
 
             IE6: this.isIE6(), // Internet Explorer 6
@@ -1647,6 +1685,8 @@ beef.browser = {
             O12: this.isO12(), // Opera 12.xx
             O: this.isO(),   // Opera any version
 
+            EP: this.isEpi(), // Epiphany any version
+
             S4: this.isS4(), // Safari 4.xx
             S5: this.isS5(), // Safari 5.xx
             S6: this.isS6(), // Safari 6.x
@@ -1657,8 +1697,8 @@ beef.browser = {
     },
 
     /**
-     * Returns the type of browser being used.
-     * @return: {String} User agent software and version.
+     * Returns the major version of the browser being used.
+     * @return: {String} version number || 'UNKNOWN'.
      *
      * @example: beef.browser.getBrowserVersion()
      */
@@ -1667,47 +1707,47 @@ beef.browser = {
         if (this.isC5()) {
             return '5'
         }
-        ; 	// Chrome 5
+        ;   // Chrome 5
         if (this.isC6()) {
             return '6'
         }
-        ; 	// Chrome 6
+        ;   // Chrome 6
         if (this.isC7()) {
             return '7'
         }
-        ; 	// Chrome 7
+        ;   // Chrome 7
         if (this.isC8()) {
             return '8'
         }
-        ; 	// Chrome 8
+        ;   // Chrome 8
         if (this.isC9()) {
             return '9'
         }
-        ; 	// Chrome 9
+        ;   // Chrome 9
         if (this.isC10()) {
             return '10'
         }
-        ; 	// Chrome 10
+        ;   // Chrome 10
         if (this.isC11()) {
             return '11'
         }
-        ; 	// Chrome 11
+        ;   // Chrome 11
         if (this.isC12()) {
             return '12'
         }
-        ; 	// Chrome 12
+        ;   // Chrome 12
         if (this.isC13()) {
             return '13'
         }
-        ; 	// Chrome 13
+        ;   // Chrome 13
         if (this.isC14()) {
             return '14'
         }
-        ; 	// Chrome 14
+        ;   // Chrome 14
         if (this.isC15()) {
             return '15'
         }
-        ; 	// Chrome 15
+        ;   // Chrome 15
         if (this.isC16()) {
             return '16'
         }
@@ -1984,7 +2024,7 @@ beef.browser = {
             return '51'
         }
         ;   // Chrome 51 for iOS
-	    if (this.isC52()) {
+        if (this.isC52()) {
             return '52'
         }
         ;// Chrome 52
@@ -2274,6 +2314,10 @@ beef.browser = {
             return '57'
         }
         ;   // Firefox 57
+        if (this.isFF58()) {
+            return '58'
+        }
+        ;   // Firefox 58
 
         if (this.isIE6()) {
             return '6'
@@ -2304,6 +2348,18 @@ beef.browser = {
             return '1'
         }
         ;   // Microsoft Edge
+
+        if (this.isEpi()) {
+            // believe the UserAgent string for version info - until whenever
+            var epiphanyRe = /Epiphany\/(\d+)/;
+            var versionDetails = epiphanyRe.exec( beef.browser.getBrowserReportedName());
+            if (versionDetails.length > 1) {
+                return versionDetails[1];
+            } else {
+                return "UNKNOWN"; // returns from here or it may take Safari version details
+            }
+        }
+        ;                       // Epiphany
 
         if (this.isS4()) {
             return '4'
@@ -2362,7 +2418,7 @@ beef.browser = {
         if (this.isC()) {
             return 'C'
         }
-        ; 	// Chrome any version
+        ;   // Chrome any version
         if (this.isFF()) {
             return 'FF'
         }
@@ -2379,6 +2435,10 @@ beef.browser = {
             return 'O'
         }
         ;		// Opera any version
+        if (this.isEpi()) {
+            return 'EP'
+        }
+        ;			// Epiphany any version
         if (this.isS()) {
             return 'S'
         }
@@ -2862,8 +2922,9 @@ beef.browser = {
      */
     getPluginsIE: function () {
         var results = '';
-        var plugins = {'AdobePDF6': {
-            'control': 'PDF.PdfCtrl',
+        var plugins = {
+            'AdobePDF6': {
+                'control': 'PDF.PdfCtrl',
             'return': function (control) {
                 version = control.getVersions().split(',');
                 version = version[0].split('=');
@@ -2981,14 +3042,14 @@ beef.browser = {
         var page_referrer = (document.referrer) ? document.referrer : "Unknown";
         var hostname = (document.location.hostname) ? document.location.hostname : "Unknown";
         switch (document.location.protocol) {
-            case "http:":
-                var default_port = "80";
-                break;
-            case "https:":
-                var default_port = "443";
-                break
-            default:
-                var default_port = "";
+        case "http:":
+            var default_port = "80";
+            break;
+        case "https:":
+            var default_port = "443";
+            break
+        default:
+            var default_port = "";
         }
         var hostport = (document.location.port) ? document.location.port : default_port;
         var browser_plugins = beef.browser.getPlugins();
@@ -3001,7 +3062,9 @@ beef.browser = {
         var touch_enabled = (beef.hardware.isTouchEnabled()) ? "Yes" : "No";
         var browser_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : 'Unknown';
         var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {
-            if (value == true) return value; else if (value == null) return; else if (typeof value == 'object') return value; else return;
+            if (value == true) return value;
+            else if (typeof value == 'object') return value;
+            else return undefined;
         });
         var screen_size = beef.browser.getScreenSize();
         var window_size = beef.browser.getWindowSize();
@@ -3175,13 +3238,13 @@ beef.browser = {
      * @from: https://github.com/idofilin/webgl-by-example/blob/master/detect-webgl/detect-webgl.js
      * */
     hasWebGL: function () {
-      try {
-        var canvas = document.createElement("canvas");
-        var gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-        return !!(gl && gl instanceof WebGLRenderingContext);
-      } catch(e) {
-        return false;
-      }
+        try {
+            var canvas = document.createElement("canvas");
+            var gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+            return !!(gl && gl instanceof WebGLRenderingContext);
+        } catch(e) {
+            return false;
+        }
     },
 
     /**
@@ -3339,7 +3402,7 @@ beef.browser = {
         if (scope == 'PER_DOMAIN')
             testUrl = "http://browserspy.dk/connections.php?img=1&amp;random=";
         else
-        // The token will be replaced by a different number with each request (different origin).
+            // The token will be replaced by a different number with each request (different origin).
             testUrl = "http://<token>.browserspy.dk/connections.php?img=1&amp;random=";
 
         var imagesLoaded = 0;			// Number of responding images before timeout.
