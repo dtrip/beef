@@ -1,5 +1,17 @@
 language: ruby
 rvm:
-  - 2.1
-  - 2.2
   - 2.3.0
+  - 2.4.0
+  - 2.5.0
+env:
+  - "BEEF_TEST=true"
+addons:
+  apt:
+    packages:
+      - libsqlite3-dev
+      - build-essential
+      - patch
+      - ruby-dev
+      - zlib1g-dev
+      - liblzma-dev
+      - libcurl4-openssl-dev

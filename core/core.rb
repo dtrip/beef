@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2018 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -36,8 +36,4 @@ require 'core/main/migration'
 # @note Include the command line parser and the banner printer
 require 'core/main/console/commandline'
 require 'core/main/console/banners'
-
-# @note Include rubyzip lib
-require 'zip'
-
 

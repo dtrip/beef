@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 #
-# Copyright (c) 2006-2018 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -180,14 +180,25 @@ if config.get("beef.extension.console.shell.enable") == true
 end
 
 #
-# @note Warn and replace on default credentials
+# @note Exit on default credentials
 #
-if config.get("beef.credentials.user").eql?('beef') &&
-   [/beef[0-9]*/, /passw[o0]rd[0-9]*/].select{|pattern| pattern.match(config.get("beef.credentials.passwd"))}.any?
-  print_warning "Warning: Default username and weak password in use!"
-  better_phrase = BeEF::Core::Crypto::secure_token(16)
-  config.set("beef.credentials.passwd", better_phrase)
-  print_more "New password for this instance: #{better_phrase}"
+if config.get("beef.credentials.user").eql?('beef') && config.get("beef.credentials.passwd").eql?('beef')
+  print_error "ERROR: Default username and password in use!"
+  print_more "Change the beef.credentials.passwd in config.yaml"
+  exit 1
+end
+
+#
+# @note Validate beef.http.public and beef.http.public_port
+#
+unless config.get('beef.http.public').to_s.eql?('') || BeEF::Filters.is_valid_hostname?(config.get('beef.http.public'))
+  print_error "ERROR: Invalid public hostname: #{config.get('beef.http.public')}"
+  exit 1
+end
+                                                                                                                
+unless config.get('beef.http.public_port').to_s.eql?('') || BeEF::Filters.is_valid_port?(config.get('beef.http.public_port'))
+  print_error "ERROR: Invalid public port: #{config.get('beef.http.public_port')}"
+  exit 1
 end
 
 #

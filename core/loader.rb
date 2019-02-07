@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2018 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -8,15 +8,31 @@
 require 'rubygems'
 require 'bundler/setup'
 Bundler.require(:default)
+
 require 'cgi'
 require 'yaml'
 require 'singleton'
 require 'ipaddr'
 require 'base64'
+require 'xmlrpc/client'
 require 'openssl'
+require 'eventmachine'
+require 'thin'
+require 'rack'
+require 'em-websocket'
+require 'uglifier'
+require 'execjs'
+require 'ansi'
+require 'term/ansicolor'
+require 'json'
+require 'data_objects'
+require 'parseconfig'
+require 'erubis'
 require 'mime/types'
 require 'optparse'
 require 'resolv'
+require 'digest'
+require 'zip'
 
 # @note Include the filters
 require 'core/filters'

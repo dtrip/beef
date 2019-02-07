@@ -1,12 +1,12 @@
 #
-# Copyright (c) 2006-2018 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 class Fake_lastpass < BeEF::Core::Command
 
   def pre_send
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/core/main/client/lib/jquery-3.3.1.min.js','/lp/jquery','js')
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/core/main/client/lib/jquery-1.12.4.min.js','/lp/jquery','js')
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/index-new.html','/lp/index','html')
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/lp_signin_logo.png','/lp/lp_signin_logo','png')
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/cancel.png','/lp/cancel','png')
