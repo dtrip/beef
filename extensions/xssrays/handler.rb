@@ -17,22 +17,30 @@ module BeEF
           # verify if the request contains the hook token
           # raise an error if it's null or not found in the DB
           beef_hook = params[:hbsess] || nil
-          (print_error "[XSSRAYS] Invalid beefhook id: the hooked browser cannot be found in the database";return) if beef_hook.nil? || HB.first(:session => beef_hook) == nil
 
+          if beef_hook.nil? || HB.first(:session => beef_hook).nil?
+            print_error "[XSSRAYS] Invalid beef hook ID: the hooked browser cannot be found in the database"
+            return
+          end
+
+          # verify the specified ray ID is valid
           rays_scan_id = params[:raysid] || nil
-          (print_error "[XSSRAYS] Raysid is null";return) if rays_scan_id.nil?
+          if rays_scan_id.nil? || !BeEF::Filters::nums_only?(rays_scan_id)
+            print_error "[XSSRAYS] Invalid ray ID"
+            return
+          end
 
-          if params[:action] == 'ray'
+          case params[:action]
+          when 'ray'
             # we received a ray
             parse_rays(rays_scan_id)
+          when 'finish'
+            # we received a notification for finishing the scan
+            finalize_scan(rays_scan_id)
           else
-            if params[:action] == 'finish'
-              # we received a notification for finishing the scan
-              finalize_scan(rays_scan_id)
-            else
-              #invalid action
-              print_error "[XSSRAYS] Invalid action";return
-            end
+            # invalid action
+            print_error "[XSSRAYS] Invalid action"
+            return
           end
 
         headers 'Pragma' => 'no-cache',
@@ -48,17 +56,21 @@ module BeEF
           xssrays_scan = XS.first(:id => rays_scan_id)
           hooked_browser = HB.first(:session => params[:hbsess])
 
-          if (xssrays_scan != nil)
-            xssrays_detail = XD.new(
-                :hooked_browser_id => hooked_browser.id,
-                :vector_name => params[:n],
-                :vector_method => params[:m],
-                :vector_poc => params[:p],
-                :xssraysscan_id => xssrays_scan.id
-            )
-            xssrays_detail.save
+          if xssrays_scan.nil?
+            print_error "[XSSRAYS] Invalid scan"
+            return
           end
-          print_info("[XSSRAYS] Scan id [#{xssrays_scan.id}] received ray [ip:#{hooked_browser.ip.to_s}], hooked domain [#{hooked_browser.domain.to_s}]")
+
+          xssrays_detail = XD.new(
+              :hooked_browser_id => hooked_browser.session,
+              :vector_name => params[:n],
+              :vector_method => params[:m],
+              :vector_poc => params[:p],
+              :xssraysscan_id => xssrays_scan.id
+          )
+          xssrays_detail.save
+
+          print_info("[XSSRAYS] Scan id [#{xssrays_scan.id}] received ray [ip:#{hooked_browser.ip}], hooked domain [#{hooked_browser.domain}]")
           print_debug("[XSSRAYS] Ray info: \n #{request.query_string}")
         end
 
@@ -66,10 +78,13 @@ module BeEF
         def finalize_scan(rays_scan_id)
           xssrays_scan = BeEF::Core::Models::Xssraysscan.first(:id => rays_scan_id)
 
-          if (xssrays_scan != nil)
-            xssrays_scan.update(:is_finished => true, :scan_finish => Time.now)
-            print_info("[XSSRAYS] Scan id [#{xssrays_scan.id}] finished at [#{xssrays_scan.scan_finish}]")
+          if xssrays_scan.nil?
+            print_error "[XSSRAYS] Invalid scan"
+            return
           end
+
+          xssrays_scan.update(:is_finished => true, :scan_finish => Time.now)
+          print_info("[XSSRAYS] Scan id [#{xssrays_scan.id}] finished at [#{xssrays_scan.scan_finish}]")
         end
       end
     end

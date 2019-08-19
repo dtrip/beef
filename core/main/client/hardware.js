@@ -11,7 +11,7 @@ beef.hardware = {
   /*
    * @return: {String} CPU type
    **/
-  cpuType: function() {
+  getCpuArch: function() {
     var arch = 'UNKNOWN';
     // note that actually WOW64 means IE 32bit and Windows 64 bit. we are more interested
     // in detecting the OS arch rather than the browser build
@@ -37,6 +37,114 @@ beef.hardware = {
     return arch;
   },
 
+  /**
+   * Returns number of CPU cores
+   **/
+  getCpuCores: function() {
+    var cores = 'unknown';
+    try {
+      if(typeof navigator.hardwareConcurrency != 'undefined') {
+        cores = navigator.hardwareConcurrency;
+      }
+    } catch(e) {
+      cores = 'unknown';
+    }
+    return cores;
+  },
+
+  /**
+   * Returns CPU details
+   **/
+  getCpuDetails: function() {
+    return {
+      arch: beef.hardware.getCpuArch(),
+      cores: beef.hardware.getCpuCores()
+    }
+  },
+
+  /**
+   * Returns GPU details
+   **/
+  getGpuDetails: function() {
+    var gpu = 'unknown';
+    var vendor = 'unknown';
+    // use canvas technique:
+    // https://github.com/Valve/fingerprintjs2
+    // http://codeflow.org/entries/2016/feb/10/webgl_debug_renderer_info-extension-survey-results/
+    try {
+      var getWebglCanvas = function () {
+        var canvas = document.createElement('canvas')
+        var gl = null
+        try {
+          gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+        } catch (e) { }
+        if (!gl) { gl = null }
+        return gl;
+      }
+
+      var glContext = getWebglCanvas();
+      var extensionDebugRendererInfo = glContext.getExtension('WEBGL_debug_renderer_info');
+      var gpu = glContext.getParameter(extensionDebugRendererInfo.UNMASKED_RENDERER_WEBGL);
+      var vendor = glContext.getParameter(extensionDebugRendererInfo.UNMASKED_VENDOR_WEBGL);
+      beef.debug("GPU: " + gpu + " - Vendor: " + vendor);
+    } catch (e) {
+      beef.debug('Failed to detect WebGL renderer: ' + e.toString());
+    }
+    return {
+      gpu: gpu,
+      vendor: vendor
+    }
+  },
+
+  /**
+   * Returns RAM (GiB)
+   **/
+  getMemory: function() {
+    var memory = 'unknown';
+    try {
+      if(typeof navigator.deviceMemory != 'undefined') {
+        memory = navigator.deviceMemory;
+      }
+    } catch(e) {
+      memory = 'unknown';
+    }
+    return memory;
+  },
+
+  /**
+   * Returns battery details
+   **/
+  getBatteryDetails: function() {
+    var battery = navigator.battery || navigator.webkitBattery || navigator.mozBattery;
+
+    if (!!battery) {
+      return {
+        chargingStatus: battery.charging,
+        batteryLevel: battery.level * 100 + "%",
+        chargingTime: battery.chargingTime,
+        dischargingTime: battery.dischargingTime
+      }
+    } else {
+      return {
+        chargingStatus: 'unknown',
+        batteryLevel: 'unknown',
+        chargingTime: 'unknown',
+        dischargingTime: 'unknown'
+      }
+    }
+  },
+
+  /**
+   * Returns zombie screen size and color depth.
+   */
+  getScreenSize: function () {
+    return {
+      width: window.screen.width,
+      height: window.screen.height,
+      colordepth: window.screen.colorDepth
+    }
+  },
+
   /*
    * @return: {Boolean} true or false.
    **/
@@ -49,8 +157,17 @@ beef.hardware = {
    * @return: {Boolean} true or false.
    **/
   isVirtualMachine: function() {
-    if (this.isMobileDevice()) return false;
-    if (screen.width % 2 || screen.height % 2) return true;
+    if (this.getGpuDetails().vendor.match('VMware, Inc'))
+      return true;
+
+    if (this.isMobileDevice())
+      return false;
+
+    // if the screen resolution is uneven, and it's not a known mobile device
+    // then it's probably a VM
+    if (screen.width % 2 || screen.height % 2)
+      return true;
+
     return false;
   },
 

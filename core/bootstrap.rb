@@ -29,9 +29,6 @@ require 'core/main/network_stack/handlers/raw'
 require 'core/main/network_stack/assethandler'
 require 'core/main/network_stack/api'
 
-# @note Include the distributed engine
-require 'core/main/distributed_engine/models/rules'
-
 # @note Include the autorun engine
 require 'core/main/autorun_engine/models/rule'
 require 'core/main/autorun_engine/models/execution'
@@ -48,6 +45,7 @@ require 'core/hbmanager'
 
 ## @note Include RESTful API
 require 'core/main/rest/handlers/hookedbrowsers'
+require 'core/main/rest/handlers/browserdetails'
 require 'core/main/rest/handlers/modules'
 require 'core/main/rest/handlers/categories'
 require 'core/main/rest/handlers/logs'

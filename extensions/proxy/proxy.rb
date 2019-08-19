@@ -27,7 +27,7 @@ module BeEF
           # load certificate
           begin
             cert_file = @conf.get('beef.extension.proxy.cert')
-            cert = File.open(cert_file)
+            cert = File.read(cert_file)
             ssl_context.cert = OpenSSL::X509::Certificate.new(cert)
           rescue
             print_error "[Proxy] Could not load SSL certificate '#{cert_file}'"
@@ -36,7 +36,7 @@ module BeEF
           # load key
           begin
             key_file = @conf.get('beef.extension.proxy.key')
-            key = File.open(key_file)
+            key = File.read(key_file)
             ssl_context.key = OpenSSL::PKey::RSA.new(key)
           rescue
             print_error "[Proxy] Could not load SSL key '#{key_file}'"
@@ -171,7 +171,7 @@ module BeEF
               header_key = line.split(': ')[0]
               header_value = line.split(': ')[1]
               next if header_key.nil?
-              next if ignore_headers.include?(header_key)
+              next if ignore_headers.any?{ |h| h.casecmp(header_key) == 0 }
               if header_value.nil?
                 #headers_hash[header_key] = ""
               else
@@ -192,13 +192,18 @@ module BeEF
 
         def get_tunneling_proxy
           proxy_browser = HB.first(:is_proxy => true)
-          if (proxy_browser != nil)
-            proxy_browser_id = proxy_browser.id.to_s
-          else
-            proxy_browser_id = 1
-            print_debug "[PROXY] Proxy browser not set. Defaulting to browser id #1"
+          unless proxy_browser.nil?
+            return proxy_browser.session.to_s
           end
-          proxy_browser_id
+
+          hooked_browser = HB.first
+          unless hooked_browser.nil?
+            print_debug "[Proxy] Proxy browser not set. Defaulting to first hooked browser [id: #{hooked_browser.session}]"
+            return hooked_browser.session
+          end
+
+          print_error '[Proxy] No hooked browsers'
+          nil
         end
       end
     end

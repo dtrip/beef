@@ -10,7 +10,6 @@ end
 end
 
 # @note Includes database models - the order must be consistent otherwise DataMapper goes crazy
-require 'core/main/models/user'
 require 'core/main/models/commandmodule'
 require 'core/main/models/hookedbrowser'
 require 'core/main/models/log'
@@ -22,7 +21,6 @@ require 'core/main/models/browserdetails'
 # @note Include the constants
 require 'core/main/constants/browsers'
 require 'core/main/constants/commandmodule'
-require 'core/main/constants/distributedengine'
 require 'core/main/constants/os'
 require 'core/main/constants/hardware'
 
@@ -32,6 +30,7 @@ require 'core/main/command'
 require 'core/main/crypto'
 require 'core/main/logger'
 require 'core/main/migration'
+require 'core/main/geoip'
 
 # @note Include the command line parser and the banner printer
 require 'core/main/console/commandline'

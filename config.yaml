@@ -6,7 +6,7 @@
 # BeEF Configuration file
 
 beef:
-    version: '0.4.7.0-alpha'
+    version: '0.4.7.4-alpha-pre'
     # More verbose messages (server-side)
     debug: false
     # More verbose messages (client-side)
@@ -23,10 +23,10 @@ beef:
     # Interface / IP restrictions
     restrictions:
         # subnet of IP addresses that can hook to the framework
-        permitted_hooking_subnet: "0.0.0.0/0"
+        permitted_hooking_subnet: ["0.0.0.0/0", "::/0"]
         # subnet of IP addresses that can connect to the admin UI
-        #permitted_ui_subnet: "127.0.0.1/32"
-        permitted_ui_subnet: "0.0.0.0/0"
+        #permitted_ui_subnet: ["127.0.0.1/32", "::1/128"]
+        permitted_ui_subnet: ["0.0.0.0/0", "::/0"]
         # slow API calls to 1 every  api_attempt_delay  seconds
         api_attempt_delay: "0.05"
 
@@ -54,13 +54,9 @@ beef:
         #public: ""      # public hostname/IP address
         #public_port: "" # public port (experimental)
 
-        # Web Admin user interface URI
-        web_ui_basepath: "/ui"
-
         # Hook
         hook_file: "/hook.js"
         hook_session_name: "BEEFHOOK"
-        session_cookie_name: "BEEFSESSION"
 
         # Allow one or multiple origins to access the RESTful API using CORS
         # For multiple origins use: "http://browserhacker.com, http://domain2.com"
@@ -134,12 +130,10 @@ beef:
     dns_hostname_lookup: false
 
     # IP Geolocation
-    # NOTE: requires MaxMind database:
-    #   curl -O http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
-    #   gunzip GeoLiteCity.dat.gz && mkdir /opt/GeoIP && mv GeoLiteCity.dat /opt/GeoIP
+    # NOTE: requires MaxMind database. Run ./updated-geoipdb to install.
     geoip:
-        enable: false
-        database: '/opt/GeoIP/GeoLiteCity.dat'
+        enable: true
+        database: '/opt/GeoIP/GeoLite2-City.mmdb'
 
     # Integration with PhishingFrenzy
     # If enabled BeEF will try to get the UID parameter value from the hooked URI, as this is used by PhishingFrenzy
@@ -154,6 +148,7 @@ beef:
     extension:
         admin_ui:
             enable: true
+            base_path: "/ui"
         demos:
             enable: true
         events:

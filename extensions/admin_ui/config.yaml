@@ -8,8 +8,14 @@ beef:
         admin_ui:
             name: 'Admin UI'
             enable: false
-            favicon_file_name: "favicon.ico"
-            favicon_dir: "/images"
+
+            # Authentication and authorisation
+            session_cookie_name: "BEEFSESSION"
             login_fail_delay: 1
+
+            # Admin UI
+            base_path: "/ui"
+            favicon_file_name: "favicon.ico"
             play_sound_on_new_zombie: false
+            panel_update_interval: 10 # seconds
 

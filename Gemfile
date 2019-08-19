@@ -42,7 +42,7 @@ end
 
 # Geolocation support
 group :geoip do
-  gem 'geoip'
+  gem 'maxmind-db'
 end
 
 gem 'parseconfig'
@@ -68,11 +68,6 @@ end
 # DNS extension
 group :ext_dns do
   gem 'rubydns', '~> 0.7.3'
-end
-
-# network extension
-group :ext_network do
-  gem 'dm-serializer'
 end
 
 # QRcode extension

@@ -29,10 +29,10 @@ ZombieTab_Requester = function(zombie) {
 	 ********************************************/
 	var proxy_panel = new Ext.Panel({
 		id: 'requester-proxy-zombie-'+zombie.session,
-		title: 'Proxy',
+		title: 'Help',
 		layout: 'fit',
 		padding: '10 10 10 10',
-                html: "<div style='font:11px tahoma,arial,helvetica,sans-serif;width:500px' ><p style='font:11px tahoma,arial,helvetica,sans-serif'>The Tunneling Proxy allows you to use a hooked browser as a proxy. Simply right-click a browser from the Hooked Browsers tree to the left and select \"Use as Proxy\".</p><p style='margin: 10 0 10 0'><img src='<%= @base_path %>/media/images/help/proxy.png'></p><p>The proxy runs on localhost port 6789 by default. Each request sent through the Proxy is recorded in the History panel in the Rider tab. Click a history item to view the HTTP headers and HTML source of the HTTP response.</p><p style='margin: 10 0 10 0'><img src='<%= @base_path %>/media/images/help/history.png'></p><p style='font:11px tahoma,arial,helvetica,sans-serif'>To manually forge an arbitrary HTTP request use the \"Forge Request\" tab from the Rider tab.</p><p style='margin: 10 0 10 0'><img src='<%= @base_path %>/media/images/help/forge.png'></p><p style='font:11px tahoma,arial,helvetica,sans-serif'>For more information see: <a href=\"https://github.com/beefproject/beef/wiki/Tunneling\">https://github.com/beefproject/beef/wiki/Tunneling</a></p></div>",
+                html: "<div style='font:11px tahoma,arial,helvetica,sans-serif;width:500px' ><p style='font:11px tahoma,arial,helvetica,sans-serif'>The Tunneling Proxy allows you to use a hooked browser as a proxy. Simply right-click a browser from the Hooked Browsers tree to the left and select \"Use as Proxy\".</p><p style='margin: 10 0 10 0'><img src='<%= @base_path %>/media/images/help/proxy.png'></p><p>The proxy runs on localhost port 6789 by default. Each request sent through the Proxy is recorded in the History panel in the Proxy tab. Click a history item to view the HTTP response headers and response body.</p><p style='margin: 10 0 10 0'><img src='<%= @base_path %>/media/images/help/history.png'></p><p style='font:11px tahoma,arial,helvetica,sans-serif'>To manually forge an arbitrary HTTP request use the \"Forge Request\" tab from the Proxy tab.</p><p style='margin: 10 0 10 0'><img src='<%= @base_path %>/media/images/help/forge.png'></p><p style='font:11px tahoma,arial,helvetica,sans-serif'>For more information see: <a href=\"https://github.com/beefproject/beef/wiki/Tunneling\">https://github.com/beefproject/beef/wiki/Tunneling</a></p></div>",
 		listeners: {
 			activate: function(proxy_panel) {
 				// to do: refresh list of hooked browsers
@@ -56,19 +56,17 @@ ZombieTab_Requester = function(zombie) {
 	 ********************************************/
 	var history_panel_store = new Ext.ux.data.PagingJsonStore({
 		storeId: 'requester-history-store-zombie-'+zombie.session,
-		url: '<%= @base_path %>/requester/history.json',
+		proxy: new Ext.data.HttpProxy({
+			method: 'GET',
+			url: '/api/requester/requests/' + zombie.session + '?token=' + beefwui.get_rest_token(),
+		}),
 		remoteSort: false,
 		autoDestroy: true,
 		autoLoad: false,
-		root: 'history',
+		root: 'requests',
 
 		fields: ['proto', 'domain', 'port', 'method', 'request_date', 'response_date','id', 'has_ran', 'path','response_status_code', 'response_status_text', 'response_port_status'],
 		sortInfo: {field: 'request_date', direction: 'DESC'},
-		
-		baseParams: {
-			nonce: Ext.get("nonce").dom.value,
-			zombie_session: zombie.session
-		}
 	});
 
 	var req_pagesize = 30;
@@ -80,24 +78,6 @@ ZombieTab_Requester = function(zombie) {
 		displayMsg: 'Displaying history {0} - {1} of {2}',
 		emptyMsg: 'No history to display'
 	});
-
-    /*
-     * Uncomment it when we'll add a contextMenu (right click on a row) in the history grid
-     */
-//    var history_panel_context_menu = new Ext.menu.Menu({
-//        items: [{
-//            id: 'do-something',
-//            text: 'Do something'
-//        }],
-//        listeners: {
-//            itemclick: function(item) {
-//                switch (item.id) {
-//                    case 'do-something':
-//                        break;
-//                }
-//            }
-//        }
-//    });
 
 	var history_panel_grid = new Ext.grid.GridPanel({
 		id: 'requester-history-grid-zombie-'+zombie.session,
@@ -201,10 +181,9 @@ ZombieTab_Requester = function(zombie) {
 		title: 'History',
 		items:[history_panel_grid],
 		layout: 'fit',
-		
 		listeners: {
 			activate: function(history_panel) {
-				history_panel.items.items[0].store.reload({params:{url:'<%= @base_path %>/requester/history.json'}});
+				history_panel.items.items[0].store.reload({params: {nonce: Ext.get("nonce").dom.value}});
 			}
 		}
 	});
@@ -225,7 +204,7 @@ ZombieTab_Requester = function(zombie) {
 		var form = new Ext.FormPanel({
 			title: 'Forge Raw HTTP Request',
 			id: 'requester-request-form-zombie'+zombie.session,
-			url: '<%= @base_path %>/requester/send',
+			url: '/api/requester/send/' + zombie.session + '?token=' + beefwui.get_rest_token(),
 			hideLabels : true,
 			border: false,
 			padding: '3px 5px 0 5px',
@@ -256,13 +235,12 @@ ZombieTab_Requester = function(zombie) {
 					var use_ssl = Ext.getCmp('requester-forge-requests-ssl').getValue();
 					if (use_ssl) var proto = 'https'; else var proto = 'http';
 					var form = Ext.getCmp('requester-request-form-zombie'+zombie.session).getForm();
-					
+
 					bar.update_sending('Sending request to ' + zombie.ip + '...');
 					
 					form.submit({
 						params: {
-							nonce: Ext.get("nonce").dom.value,//insert the nonce with the form
-							zombie_session: zombie.session,
+							raw_request: Ext.getCmp('raw-request-zombie-'+zombie.session).getValue(),
 							proto: proto
 						},
 						success: function() {
@@ -295,13 +273,9 @@ ZombieTab_Requester = function(zombie) {
         function deleteResponse(request, zombie, bar) {
 
 		Ext.Ajax.request({
-			url: '<%= @base_path %>/requester/delete',
+			url: '/api/requester/response/' + request.id + '?token=' + beefwui.get_rest_token(),
+			method: 'DELETE',
 			loadMask: true,
-			
-			params: {
-				nonce: Ext.get("nonce").dom.value,
-				http_id: request.id
-			},
 			
 			success: function(response) {
 				var xhr = Ext.decode(response.responseText);
@@ -328,14 +302,8 @@ ZombieTab_Requester = function(zombie) {
 		bar.update_sending('Getting response...');
 		
 		Ext.Ajax.request({
-			url: '<%= @base_path %>/requester/response.json',
+			url: '/api/requester/response/' + request.id + '?token=' + beefwui.get_rest_token(),
 			loadMask: true,
-			
-			params: {
-				nonce: Ext.get("nonce").dom.value,
-				http_id: request.id
-			},
-			
 			success: function(response) {
 				var xhr = Ext.decode(response.responseText);
 
@@ -396,7 +364,7 @@ ZombieTab_Requester = function(zombie) {
 
 	ZombieTab_Requester.superclass.constructor.call(this, {
 		id: 'zombie-requester-tab-zombie-'+zombie.session,
-		title: 'Rider',
+		title: 'Proxy',
 		activeTab: 0,
 		viewConfig: {
 			forceFit: true,

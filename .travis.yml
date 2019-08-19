@@ -1,10 +1,16 @@
 language: ruby
 rvm:
-  - 2.3.0
   - 2.4.0
   - 2.5.0
+  - 2.6.0
 env:
   - "BEEF_TEST=true"
+notifications:
+  email:
+    recipients:
+      - wade@bindshell.net
+    on_success: always
+    on_failure: always
 addons:
   apt:
     packages:
