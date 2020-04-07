@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -9,31 +9,28 @@ module BeEF
       module Dns
 
         # Represents an individual DNS rule.
-        class Rule
-          include DataMapper::Resource
-
-          storage_names[:default] = 'extension_dns_rules'
-
-          property :id, String, :key => true
-          property :pattern, Object, :required => true
-          property :resource, Object, :required => true
-          property :response, Object, :required => true
-          property :callback, Object, :required => true
+        class Rule < BeEF::Core::Model
 
           # Hooks the model's "save" event. Validates pattern/response and generates a rule identifier.
-          before :save do |rule|
+          before_save :check_rule
+          self.table_name = 'dns_rules'
+          serialize :response, Array
+
+        private
+
+          def check_rule
             begin
-              validate_pattern(rule.pattern)
-              rule.callback = format_callback(rule.resource, rule.response)
+              validate_pattern(self.pattern)
+              self.callback = format_callback(self.resource.constantize, self.response)
             rescue InvalidDnsPatternError, UnknownDnsResourceError, InvalidDnsResponseError => e
               print_error e.message
               throw :halt
             end
 
-            rule.id = BeEF::Core::Crypto.dns_rule_id
+            #self.id = BeEF::Core::Crypto.dns_rule_id
+
           end
 
-        private
           # Verifies that the given pattern is valid (i.e. non-empty, no null's or printable characters).
           def validate_pattern(pattern)
             raise InvalidDnsPatternError unless BeEF::Filters.is_non_empty_string?(pattern) &&

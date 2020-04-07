@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -30,7 +30,7 @@ module BeEF
           # validate hook session value
           session_id = get_param(@data, 'beefhook')
           (self.err_msg "session id is invalid"; return) if not BeEF::Filters.is_valid_hook_session_id?(session_id)
-          hooked_browser = HB.first(:session => session_id)
+          hooked_browser = HB.where(:session => session_id).first
           return if not hooked_browser.nil? # browser is already registered with framework
 
           # create the structure representing the hooked browser
@@ -73,7 +73,7 @@ module BeEF
             @http_headers[key.sub(/^HTTP_/, '')] = value.force_encoding('UTF-8')
           }
           zombie.httpheaders = @http_headers.to_json
-          zombie.save
+          zombie.save!
           #print_debug "[INIT] HTTP Headers: #{zombie.httpheaders}"
 
           # add a log entry for the newly hooked browser
@@ -92,7 +92,7 @@ module BeEF
           end
 
           if BeEF::Filters.is_valid_ip?(zombie.ip)
-            BD.set(session_id, 'host.ipaddress', zombie.ip)
+            BD.set(session_id, 'network.ipaddress', zombie.ip)
           else
             self.err_msg "Invalid IP address returned from the hook browser's initial connection."
           end
@@ -199,19 +199,19 @@ module BeEF
 
           # store and log proxy details
           if using_proxy == true
-            BD.set(session_id, 'UsingProxy', "#{using_proxy}")
+            BD.set(session_id, 'network.proxy', 'Yes')
             proxy_log_string = "#{zombie.ip} is using a proxy"
             unless proxy_clients.empty?
-              BD.set(session_id, 'ProxyClient', "#{proxy_clients.sort.uniq.join(',')}")
+              BD.set(session_id, 'network.proxy.client', "#{proxy_clients.sort.uniq.join(',')}")
               proxy_log_string += " [client: #{proxy_clients.sort.uniq.join(',')}]"
             end
             unless proxy_server.nil?
-              BD.set(session_id, 'ProxyServer', "#{proxy_server}")
+              BD.set(session_id, 'network.proxy.server', "#{proxy_server}")
               proxy_log_string += " [server: #{proxy_server}]"
               if config.get("beef.extension.network.enable") == true
                 if proxy_server =~ /^([\d\.]+):([\d]+)$/
                   print_debug("Hooked browser [id:#{zombie.id}] is using a proxy [ip: #{$1}]")
-                  BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => $1, :type => 'Proxy')
+                  BeEF::Core::Models::NetworkHost.create(:hooked_browser_id => session_id, :ip => $1, :type => 'Proxy')
                 end
               end
             end
@@ -504,7 +504,7 @@ module BeEF
           # add localhost as network host
           if config.get('beef.extension.network.enable')
             print_debug("Hooked browser has network interface 127.0.0.1")
-            BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => '127.0.0.1', :hostname => 'localhost', :os => BeEF::Core::Models::BrowserDetails.get(session_id, 'host.os.name'))
+            BeEF::Core::Models::NetworkHost.create(:hooked_browser_id => session_id, :ip => '127.0.0.1', :hostname => 'localhost', :os => BeEF::Core::Models::BrowserDetails.get(session_id, 'host.os.name'))
           end
 
           # check if any ARE rules shall be triggered only if the channel is != WebSockets (XHR). If the channel

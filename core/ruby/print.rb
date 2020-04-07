@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -7,14 +7,14 @@
 # Function used to print errors to the console
 # @param [String] s String to be printed
 def print_error(s)
-  puts Time.now.localtime.strftime("[%k:%M:%S]")+'[!]'.red+' '+s
+  puts Time.now.localtime.strftime("[%k:%M:%S]")+'[!]'+' '+s.to_s
   BeEF.logger.error s.to_s
 end
 
 # Function used to print information to the console
 # @param [String] s String to be printed
 def print_info(s)
-  puts Time.now.localtime.strftime("[%k:%M:%S]")+'[*]'.blue+' '+s
+  puts Time.now.localtime.strftime("[%k:%M:%S]")+'[*]'+' '+s.to_s
   BeEF.logger.info s.to_s
 end
 
@@ -27,7 +27,7 @@ end
 # Function used to print warning information
 # @param [String] s String to be printed
 def print_warning(s)
-  puts Time.now.localtime.strftime("[%k:%M:%S]")+'[!]'.yellow+' '+s.to_s
+  puts Time.now.localtime.strftime("[%k:%M:%S]")+'[!]'+' '+s.to_s
   BeEF.logger.warn s.to_s
 end
 
@@ -37,7 +37,7 @@ end
 def print_debug(s)
   config = BeEF::Core::Configuration.instance
   if config.get('beef.debug') || BeEF::Core::Console::CommandLine.parse[:verbose]
-    puts Time.now.localtime.strftime("[%k:%M:%S]")+'[>]'.yellow+' '+s.to_s
+    puts Time.now.localtime.strftime("[%k:%M:%S]")+'[>]'+' '+s.to_s
     BeEF.logger.debug s.to_s
   end
 end
@@ -45,7 +45,7 @@ end
 # Function used to print successes to the console
 # @param [String] s String to be printed
 def print_success(s)
-  puts Time.now.localtime.strftime("[%k:%M:%S]")+'[+]'.green+' '+s
+  puts Time.now.localtime.strftime("[%k:%M:%S]")+'[+]'+' '+s.to_s
   BeEF.logger.info s.to_s
 end
 

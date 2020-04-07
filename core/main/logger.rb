@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -15,7 +15,8 @@ module Core
       @config = BeEF::Core::Configuration.instance
 
       # if notifications are enabled create a new instance
-      @notifications = BeEF::Extension::Notifications::Notifications unless @config.get('beef.extension.notifications.enable') == false
+	  notifications_enabled = @config.get('beef.extension.notifications.enable')
+      @notifications = BeEF::Extension::Notifications::Notifications unless (notifications_enabled == false or notifications_enabled.nil?)
     end
 
     #
@@ -39,7 +40,7 @@ module Core
       raise TypeError, '"Hooked Browser ID" needs to be an integer' unless hb.integer?
 
       # logging the new event into the database
-      @logs.new(:type => from.to_s, :event => event.to_s, :date => time_now, :hooked_browser_id => hb).save
+      @logs.create(:logtype => from.to_s, :event => event.to_s, :date => time_now, :hooked_browser_id => hb).save!
       print_debug "Event: #{event}"
       # if notifications are enabled send the info there too
       if @notifications

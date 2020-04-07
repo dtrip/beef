@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -23,7 +23,7 @@ class Get_internal_ip_webrtc < BeEF::Core::Command
             next if ip =~ /^0\.0\.0\.0$/
             next unless BeEF::Filters.is_valid_ip?(ip)
             print_debug("Hooked browser has network interface #{ip}")
-            BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => ip, :os => os)
+            BeEF::Core::Models::NetworkHost.create(:hooked_browser_id => session_id, :ip => ip, :os => os)
           end
         end
       end

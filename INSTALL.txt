@@ -1,6 +1,6 @@
 ===============================================================================
    
-    Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+    Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
     Browser Exploitation Framework (BeEF) - http://beefproject.com
     See the file 'doc/COPYING' for copying permission
 
@@ -21,9 +21,9 @@ Or cloning the Git repository from Github:
 Prerequisites
 --------------
 
-BeEF requires Ruby 2.4+.
+BeEF requires Ruby 2.5+.
 
-If your operating system package manager does not support Ruby version 2.4,
+If your operating system package manager does not support Ruby version 2.5,
 you can add the brightbox ppa repository for the latest version of Ruby:
 
   $ sudo apt-add-repository -y ppa:brightbox/ruby-ng

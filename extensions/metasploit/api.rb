@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -35,7 +35,7 @@ module BeEF
                 print_debug 'Attempting to use Metasploit exploits cache file'
                 raw = File.read(path)
                 begin
-                  msf_module_config = YAML.load(raw)
+                  msf_module_config = YAML.safe_load(raw)
                 rescue => e
                   print_error "[Metasploit] #{e.message}"
                   print_error e.backtrace
@@ -118,7 +118,7 @@ module BeEF
             msf = BeEF::Extension::Metasploit::RpcClient.instance
             if msf_key != nil && msf.login
               msf_module_options = msf.call('module.options', 'exploit', msf_key)
-              com = BeEF::Core::Models::CommandModule.first(:name => mod)
+              com = BeEF::Core::Models::CommandModule.where(:name => mod).first
               if msf_module_options
                 options = BeEF::Extension::Metasploit.translate_options(msf_module_options)
                 options << {
@@ -193,7 +193,7 @@ module BeEF
             if msf_key != nil && msf.login
               msf_module_options = msf.call('module.options', 'payload', payload)
 
-              com = BeEF::Core::Models::CommandModule.first(:name => mod)
+              com = BeEF::Core::Models::CommandModule.where(:name => mod).first
               if msf_module_options
                 options = BeEF::Extension::Metasploit.translate_options(msf_module_options)
                 return options

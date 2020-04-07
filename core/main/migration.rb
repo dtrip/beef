@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -27,14 +27,10 @@ module Core
     def update_commands!
       config = BeEF::Core::Configuration.instance
 
-      db_modules = []
-      BeEF::Core::Models::CommandModule.all.each do |mod|
-        db_modules << mod.name
-      end
+      db_modules = BeEF::Core::Models::CommandModule.all.pluck(:name)
 
       config.get('beef.module').each do |k, v|
-        h = { :name => k, :path => "#{v['path']}module.rb" }
-        BeEF::Core::Models::CommandModule.new(h).save unless db_modules.include? k
+        BeEF::Core::Models::CommandModule.new(name: k, path: "#{v['path']}module.rb").save! unless db_modules.include? k
       end
     
       BeEF::Core::Models::CommandModule.all.each do |mod|

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -22,10 +22,19 @@ module BeEF
 
         #
         # @note Get online and offline hooked browsers details (like name, version, os, ip, port, ...)
+        # When websockets are enabled this will allow the ws_poll_timeout config to be used to check if the browser is online or not.
         #
         get '/' do
-          online_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 15)))
-          offline_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 15)))
+          if config.get('beef.http.websocket.enable') == false
+            online_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', (Time.new.to_i - 15)))
+            offline_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen <= ?', (Time.new.to_i - 15)))
+          # If we're using websockets use the designated threshold timeout to determine live, instead of hardcoded 15
+          # Why is it hardcoded 15?
+          else
+            timeout = config.get('beef.http.websocket.ws_poll_timeout')
+            online_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', (Time.new.to_i - timeout)))
+            offline_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen <= ?', (Time.new.to_i - timeout)))
+          end
 
           output = {
               'hooked-browsers' => {
@@ -37,34 +46,34 @@ module BeEF
         end
 
 	get '/:session/delete' do
-          hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
+      hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
           error 401 unless hb != nil
 
-          details = BeEF::Core::Models::BrowserDetails.all(:session_id => hb.session)
-	  details.destroy
+          details = BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session)
+	  details.destroy_all
 
-	  logs = BeEF::Core::Models::Log.all(:hooked_browser_id => hb.id)
-	  logs.destroy
+	  logs = BeEF::Core::Models::Log.where(:hooked_browser_id => hb.id)
+	  logs.destroy_all
 
-	  commands = BeEF::Core::Models::Command.all(:hooked_browser_id => hb.id)
-	  commands.destroy
+	  commands = BeEF::Core::Models::Command.where(:hooked_browser_id => hb.id)
+	  commands.destroy_all
 
-	  results = BeEF::Core::Models::Result.all(:hooked_browser_id => hb.id)
-	  results.destroy
+	  results = BeEF::Core::Models::Result.where(:hooked_browser_id => hb.id)
+	  results.destroy_all
 
 	  begin
-	    requester = BeEF::Core::Models::Http.all(:hooked_browser_id => hb.id)
-	    requester.destroy
+	    requester = BeEF::Core::Models::Http.where(:hooked_browser_id => hb.id)
+	    requester.destroy_all
 	  rescue => e
 	    #the requester module may not be enabled
 	  end
 
 	  begin
-	    xssraysscans = BeEF::Core::Models::Xssraysscan.all(:hooked_browser_id => hb.id)
-	    xssraysscans.destroy
+	    xssraysscans = BeEF::Core::Models::Xssraysscan.where(:hooked_browser_id => hb.id)
+	    xssraysscans.destroy_all
 
-	    xssraysdetails = BeEF::Core::Models::Xssraysdetail.all(:hooked_browser_id => hb.id)
-	    xssraysdetails.destroy
+	    xssraysdetails = BeEF::Core::Models::Xssraysdetail.where(:hooked_browser_id => hb.id)
+	    xssraysdetails.destroy_all
 	  rescue => e
 	    #the xssraysscan module may not be enabled
 	  end
@@ -96,7 +105,7 @@ module BeEF
         # Useful if you need to query the API via jQuery.dataTable < 1.10 which is currently used in PhishingFrenzy
         #
         get '/pf/online' do
-          online_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 15)))
+          online_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', (Time.new.to_i - 15)))
 
           output = {
               'aaData' => online_hooks
@@ -109,7 +118,7 @@ module BeEF
         # Useful if you need to query the API via jQuery.dataTable < 1.10 which is currently used in PhishingFrenzy
         #
         get '/pf/offline' do
-          offline_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 15)))
+          offline_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.where('lastseen <= ?', (Time.new.to_i - 15)))
 
           output = {
               'aaData' => offline_hooks
@@ -121,10 +130,10 @@ module BeEF
         # @note Get all the hooked browser details (plugins enabled, technologies enabled, cookies)
         #
         get '/:session' do
-          hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
+          hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
           error 401 unless hb != nil
 
-          details = BeEF::Core::Models::BrowserDetails.all(:session_id => hb.session)
+          details = BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session)
           result = {}
           details.each do |property|
             result[property.detail_key] = property.detail_value
@@ -140,16 +149,16 @@ module BeEF
           os_version = body['os_version']
           arch = body['arch']
 
-          hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
+          hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
           error 401 unless hb != nil
 
-          BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'host.os.name').destroy
-          BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'host.os.version').destroy
+          BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session, :detail_key => 'host.os.name').destroy
+          BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session, :detail_key => 'host.os.version').destroy
           #BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'Arch').destroy
 
-          BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'host.os.name', :detail_value => os).save
-          BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'host.os.version', :detail_value => os_version).save
-          BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'Arch', :detail_value => arch).save
+          BeEF::Core::Models::BrowserDetails.create(:session_id => hb.session, :detail_key => 'host.os.name', :detail_value => os)
+          BeEF::Core::Models::BrowserDetails.create(:session_id => hb.session, :detail_key => 'host.os.version', :detail_value => os_version)
+          BeEF::Core::Models::BrowserDetails.create(:session_id => hb.session, :detail_key => 'Arch', :detail_value => arch)
 
           # TODO if there where any ARE rules defined for this hooked browser,
           # after updating OS/arch, force a retrigger of the rule.

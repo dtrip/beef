@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -44,9 +44,12 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
     config = BeEF::Core::Configuration.instance
     @headers['Content-Type']='application/json; charset=UTF-8'
     @headers['X-Frame-Options']='sameorigin'
-    ua_ip = @request.ip # get client ip address
+    if !config.get("beef.http.allow_reverse_proxy")
+      ua_ip = @request.get_header('REMOTE_ADDR')
+    else
+      ua_ip = @request.ip # get client ip address
+    end
     @body = '{ success : false }' # attempt to fail closed
-
     # check if source IP address is permitted to authenticate
     if not permitted_source?(ua_ip)
       BeEF::Core::Logger.instance.register('Authentication', "IP source address (#{@request.ip}) attempted to authenticate but is not within permitted subnet.")

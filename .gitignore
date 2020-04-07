@@ -1,15 +1,23 @@
 ### BeEF ###
 beef.db
+beef.log
 test/msf-test
 extensions/admin_ui/media/javascript-min/
 custom-config.yaml
 .DS_Store
 .gitignore
 .rvmrc
+beef.log
 
 *.lock
 
 extensions/metasploit/msf-exploits.cache
+
+# ruby debugging
+.byebug_history
+
+#simplecov
+coverage/
 
 # The following lines were created by https://www.gitignore.io
 
@@ -107,3 +115,14 @@ $RECYCLE.BIN/
 
 test/thirdparty/msf/unit/.byebug_history
 /load
+
+### JSDoc ###
+# Dependency directories
+node_modules/
+
+# Generated files
+out/
+doc/rdoc/
+
+# User-specific files
+config.yaml
