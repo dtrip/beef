@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -12,10 +12,9 @@ Capybara.run_server = false # we need to run our own BeEF server
 require 'selenium-webdriver'
 
 class BeefTest
-
   def self.save_screenshot(session)
     Dir.mkdir(BEEF_TEST_DIR) unless File.directory?(BEEF_TEST_DIR)
-    session.driver.browser.save_screenshot(BEEF_TEST_DIR + Time.now.strftime("%Y-%m-%d--%H-%M-%S-%N") + ".png")
+    session.driver.browser.save_screenshot(BEEF_TEST_DIR + Time.now.strftime('%Y-%m-%d--%H-%M-%S-%N') + '.png')
   end
 
   def self.login(session = nil)
@@ -23,8 +22,8 @@ class BeefTest
     session.visit(ATTACK_URL)
     sleep 2.0
     session.has_content?('BeEF Authentication')
-    session.fill_in 'user', :with => BEEF_USER
-    session.fill_in 'pass', :with => BEEF_PASSWD
+    session.fill_in 'user', with: BEEF_USER
+    session.fill_in 'pass', with: BEEF_PASSWD
     session.click_button('Login')
     sleep 10.0
 
@@ -46,5 +45,4 @@ class BeefTest
     victim.visit(VICTIM_URL)
     victim
   end
-
 end

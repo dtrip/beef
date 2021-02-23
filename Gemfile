@@ -1,18 +1,18 @@
 # BeEF's Gemfile
 
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 #gem 'simplecov', require: false, group: :test
 gem 'eventmachine'
 gem 'thin'
-gem 'sinatra'
-gem 'rack'
-gem 'rack-protection'
+gem 'sinatra', '>= 2.0.2'
+gem 'rack', '>= 2.2.3'
+gem 'rack-protection', '>= 2.0.0'
 gem 'em-websocket' # WebSocket support
-gem 'uglifier'
+gem 'uglifier', '>= 2.7.2'
 gem 'mime-types'
 gem 'execjs'
 gem 'ansi'
@@ -20,11 +20,11 @@ gem 'term-ansicolor', :require => 'term/ansicolor'
 gem 'json'
 gem 'rubyzip', '>= 1.2.2'
 gem 'espeak-ruby', '>= 1.0.4' # Text-to-Voice
-gem 'nokogiri', '>= 1.10.4'
-gem 'rake'
-#ruby 2.4 isnt compatible with a higher version of active-record
-gem 'otr-activerecord' 
+gem 'nokogiri', '>= 1.11.1'
+gem 'rake', '>= 12.3.3'
+gem 'otr-activerecord'
 gem 'sqlite3'
+gem 'rubocop', '~> 0.92.0', require: false
 
 # Geolocation support
 group :geoip do
@@ -65,7 +65,7 @@ group :test do
     gem 'test-unit'
     gem 'test-unit-full'
     gem 'rspec'
-	gem 'rdoc'
+    gem 'rdoc'
     # curb gem requires curl libraries
     # sudo apt-get install libcurl4-openssl-dev
     gem 'curb'
@@ -81,7 +81,13 @@ group :test do
     gem 'rest-client', '>= 2.0.1'
     gem 'irb'
     gem 'pry-byebug'
-    gem 'em-websocket-client'
+    gem "websocket-client-simple", "~> 0.3.0"
+    gem "browserstack-local", "~> 1.3"
 end
 
 source 'https://rubygems.org'
+
+
+
+
+

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -122,7 +122,7 @@ module BeEF
           begin
             id = params[:id]
 
-            hooked_browser = HB.where(:session => id).distinct.order(:id)
+            hooked_browser = HB.where(:session => id).distinct.order(:id).first
 
             if hooked_browser.nil?
               print_error "[XSSRAYS] Invalid hooked browser ID"

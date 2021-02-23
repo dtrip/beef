@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -18,10 +18,10 @@ end
 
 ## RSPEC
 require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new(:spec)
 
-
-
+RSpec::Core::RakeTask.new(:spec) do |task|
+  task.rspec_opts = ['--tag ~run_on_browserstack']
+end
 
 ################################
 # SSL/TLS certificate

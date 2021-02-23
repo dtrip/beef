@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -42,7 +42,7 @@ module Events
 
       # push events to logger
         logger = BeEF::Core::Logger.instance
-        events.each do |key,value|
+        events.each do |value|
             logger.register('Event', parse(value), zombie.id)
         end
     end

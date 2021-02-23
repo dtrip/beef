@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -109,7 +109,7 @@ beef.browser = {
      * @example: beef.browser.isIE10()
      */
     isIE10: function () {
-        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints !== "undefined";
+        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints !== "undefined";
     },
 
     /**
@@ -127,7 +127,7 @@ beef.browser = {
      * @example: beef.browser.isEdge()
      */
     isEdge: function () {
-        return !beef.browser.isIE() && !!window.StyleMedia;
+        return !beef.browser.isIE() && !!window.styleMedia && (/Edg\/\d+\.\d/.test(window.navigator.userAgent) || /Edge\/\d+\.\d/.test(window.navigator.userAgent));
     },
 
     /**
@@ -2495,6 +2495,7 @@ beef.browser = {
     type: function () {
 
         return {
+            E: this.isEdge(), // Edge any version
             C5: this.isC5(), // Chrome 5
             C6: this.isC6(), // Chrome 6
             C7: this.isC7(), // Chrome 7
@@ -3916,12 +3917,12 @@ beef.browser = {
     getPlugins: function () {
 
         var results;
-        Array.prototype.unique = function () {
-            var o = {}, i, l = this.length, r = [];
-            for (i = 0; i < l; i += 1) o[this[i]] = this[i];
-            for (i in o) r.push(o[i]);
-            return r;
-        };
+
+        function unique(array) {
+          return $j.grep(array, function(el, index) {
+            return index === $j.inArray(el, array);
+          });
+        }
 
         // Things lacking navigator.plugins
         if (!navigator.plugins) 
@@ -3940,8 +3941,8 @@ beef.browser = {
                 // Sometimes store the version in description (Real, Adobe)
                 else results[i] = navigator.plugins[i].name;// + '-desc.' + navigator.plugins[i].description;
             }
-            results = results.unique().toString();
-
+            results = unique(results).toString();
+            
             // All browsers that don't support navigator.plugins
         } else {
             results = new Array();

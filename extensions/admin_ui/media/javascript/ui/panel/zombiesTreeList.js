@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -488,7 +488,7 @@ try{
 		balloon_text += "Hardware: " + hooked_browser.hw_name;
 		balloon_text += "<br/>";
 
-		if (hooked_browser.country == 'Unknown') {
+		if ( !hooked_browser.country || !hooked_browser.country_code || hooked_browser.country == 'Unknown' ) {
 			balloon_text += " <img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/unknown.png' /> ";
 			balloon_text += "Location: Unknown";
 		} else {
@@ -506,7 +506,7 @@ try{
 		text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(os_icon) + "' /> ";
 		text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(hw_icon) + "' /> ";
 
-		if (hooked_browser.country == 'Unknown') {
+		if ( !hooked_browser.country || !hooked_browser.country_code || hooked_browser.country == 'Unknown' ) {
 			text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/unknown.png' /> ";
 		} else {
 			text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/country-squared/" + escape(hooked_browser.country_code.toLowerCase()) + ".svg' /> ";
